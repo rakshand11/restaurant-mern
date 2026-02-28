@@ -1,0 +1,40 @@
+import mongoose, { Schema } from "mongoose";
+const orderScehma = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true
+    },
+    items: [
+        {
+            menuItem: {
+                type: Schema.Types.ObjectId,
+                ref: "menu",
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
+    ],
+    address: {
+        type: String,
+        required: true
+    },
+    totalAmount: {
+        type: Number,
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ["Pending", "Prepairing", "Delivered"],
+        default: "pending"
+    },
+    paymentMethod: {
+        type: String,
+        default: "Cash on delivery"
+    }
+}, { timestamps: true });
+export const orderModel = mongoose.model("order", orderScehma);
+//# sourceMappingURL=order.model.js.map
