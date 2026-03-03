@@ -9,7 +9,7 @@ export const addToCart = async (req: Request, res: Response) => {
         const { id } = req.user
         const menuItem = await menuModel.findById(menuItemId)
         if (!menuItem) {
-            res.status(401).json({
+            res.status(404).json({
 
                 msg: "Menu Item not found"
             })

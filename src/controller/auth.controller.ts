@@ -63,6 +63,11 @@ export const loginUser = async (req: Request, res: Response) => {
         })
         res.status(200).json({
             msg: "Login successful",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            }
 
         })
         return
@@ -120,6 +125,14 @@ export const adminLogin = async (req: Request, res: Response) => {
             maxAge: 30 * 24 * 60 * 60 * 1000
 
         })
+        // ✅ Send admin object to frontend
+        return res.status(200).json({
+            success: true,
+            admin: {
+                email,
+                role: "admin"
+            }
+        });
 
         res.status(200).json({
             msg: "Admin logged In successfully"

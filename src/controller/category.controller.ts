@@ -7,6 +7,7 @@ export const categoryController = async (req: Request, res: Response) => {
 
     try {
         const { name } = req.body
+        console.log(req.body)
         if (!name || !req.file) {
             res.status(400).json({
                 msg: "Name and image are required"

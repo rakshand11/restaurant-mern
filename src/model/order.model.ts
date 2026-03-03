@@ -30,7 +30,7 @@ const orderScehma = new Schema({
     },
     status: {
         type: String,
-        enum: ["Pending", "Prepairing", "Delivered"],
+        enum: ["pending", "prepairing", "delivered"],
         default: "pending"
     },
     paymentMethod: {

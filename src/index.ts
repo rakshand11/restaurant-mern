@@ -10,6 +10,7 @@ import { menuItemRouter } from "./route/menu.route.js"
 import { cartRouter } from "./route/cart.route.js"
 import { orderRouter } from "./route/order.route.js"
 import { bookingRouter } from "./route/booking.route.js"
+import cors from "cors"
 
 dotenv.config()
 
@@ -30,6 +31,12 @@ connectToDB()
 connectCloudinary()
 
 app.use(express.json())
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+
+}))
 app.use(cookieParser())
 app.use("/user", userRouter)
 app.use("/category", categoryRoute)

@@ -4,11 +4,9 @@ import { orderModel } from "../model/order.model.js";
 
 export const placeOrder = async (req: Request, res: Response) => {
     try {
-
-
         const { id } = req.user
         const { address } = req.body
-
+        console.log(req.body)
         if (!address) {
             res.status(400).json({
                 msg: "Please fill your address"
@@ -40,8 +38,8 @@ export const placeOrder = async (req: Request, res: Response) => {
             order: newOrder
         })
         return
-
     } catch (error) {
+        console.log(error)
         res.status(500).json({
             msg: "Internal server error"
         })
@@ -58,6 +56,7 @@ export const getOrder = async (req: Request, res: Response) => {
         })
         return
     } catch (error) {
+
         res.status(500).json({
             msg: "Internal server error"
         })
