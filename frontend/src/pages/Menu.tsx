@@ -41,7 +41,7 @@ const Menu = () => {
   const handleClearSearch = () => setSearchQuery("");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-16">
+    <div className="min-h-screen bg-gradient-to-b bg-red-50 py-16">
       <div className="container mx-auto px-4">
 
         {/* Header */}

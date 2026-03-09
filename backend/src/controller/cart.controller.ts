@@ -5,8 +5,15 @@ import { cartModel } from "../model/cart.model.js";
 export const addToCart = async (req: Request, res: Response) => {
     try {
         const { menuItemId, quantity } = req.body;
-        const userId = req.user._id;
-
+        const userId = req.user
+        if (!userId) {
+            return res.status(401).json({
+                msg: "Unauthorized"
+            });
+        }
+        console.log("User:", req.user);
+        console.log("UserId:", req.userId);
+        console.log("Body:", req.body);
         const menuItem = await menuModel.findById(menuItemId);
 
         if (!menuItem) {

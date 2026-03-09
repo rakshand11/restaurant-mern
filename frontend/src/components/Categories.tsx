@@ -34,14 +34,14 @@ const Categories = () => {
         navigate(`/menu?category=${encodeURIComponent(cat._id)}`);
     };
     return (
-        <section className="py-16 bg-linear-to-b from-gray-50 to-white">
+        <section className="py-16 bg-black">
             <div className="container mx-auto px-4 text-center">
-                <h2 className="text-4xl font-bold mb-4">
+                <h2 className="text-4xl font-bold mb-4 text-orange-400">
                     {" "}
                     Explore Our <span className="text-yellow-500">Categories</span>
                 </h2>
-                <p> Discover delicious dishes from our carefully curated categories</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <p className="text-white"> Discover delicious dishes from our carefully curated categories</p>
+                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 mt-4">
                     {category.map((cat) => (
                         <div
                             key={cat._id}
@@ -59,7 +59,7 @@ const Categories = () => {
                                 <div className="absolute inset-0 w-32 h-32 mx-auto rounded-full bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
                             <div className="mt-4">
-                                <h3 className="font-semibold text-gray-800 group-hover:text-yellow-500 transition-colors duration-300">
+                                <h3 className="font-semibold text-gray-400 group-hover:text-yellow-500 transition-colors duration-300">
                                     {cat.name}
                                 </h3>
                             </div>

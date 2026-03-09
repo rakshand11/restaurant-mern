@@ -38,16 +38,16 @@ const Menu = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
+        <div className="min-h-screen bg-black py-12">
             <div className="container mx-auto px-4">
 
                 {/* HEADER */}
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold">
+                    <h1 className="text-4xl font-bold text-orange-400">
                         Our <span className="text-yellow-500">Menu</span>
                     </h1>
 
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-gray-300 mt-2">
                         Explore our delicious dishes
                     </p>
                 </div>
@@ -55,14 +55,15 @@ const Menu = () => {
                 {/* SEARCH */}
                 <div className="max-w-2xl mx-auto mb-8">
                     <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-5 h-5" />
+
 
                         <input
                             type="text"
                             placeholder="Search dish..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-12 py-4 rounded-full border-2 border-gray-200 focus:border-yellow-500 outline-none"
+                            className="w-full pl-12 pr-12 py-4 rounded-full border-2 border-gray-400 focus:border-yellow-500 outline-none text-gray-300"
                         />
 
                         {searchQuery && (
@@ -70,14 +71,14 @@ const Menu = () => {
                                 onClick={handleClearSearch}
                                 className="absolute right-4 top-1/2 -translate-y-1/2"
                             >
-                                <X className="w-5 h-5 text-gray-400" />
+                                <X className="w-5 h-5 text-gray-300" />
                             </button>
                         )}
                     </div>
                 </div>
 
                 {/* RESULT COUNT */}
-                <p className="text-center text-gray-600 mb-8">
+                <p className="text-center text-gray-300 mb-8">
                     Showing <span className="font-bold">{filteredMenus.length}</span> dishes
                 </p>
 
@@ -89,8 +90,8 @@ const Menu = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center">
-                        <p>No dishes found</p>
+                    <div className="text-center text-gray-300">
+                        <p>😔 No dishes found at the moment.</p>
                     </div>
                 )}
             </div>

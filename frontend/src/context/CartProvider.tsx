@@ -2,6 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import axios from "axios";
 
+interface CartItem {
+    quantity: number;
+}
+
+interface Cart {
+    items: CartItem[];
+}
+
 interface CartContextType {
     cartCount: number;
     fetchCartCount: () => Promise<void>;
@@ -12,9 +20,15 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 
-    const [cartCount, setCartCount] = useState(0);
+    const [cartCount, setCartCount] = useState<number>(0);
+
+    // increase cart locally (used after add-to-cart)
     const increaseCart = (qty: number) => {
-        setCartCount(prev => prev + qty);
+        setCartCount((prev) => {
+            const newCount = prev + qty;
+            localStorage.setItem("cartCount", newCount.toString());
+            return newCount;
+        });
     };
 
     const fetchCartCount = async () => {
@@ -24,37 +38,42 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 { withCredentials: true }
             );
 
-            const cart = res.data.msg;
+            const cart: Cart | null = res.data.msg;
 
-            if (!cart || !cart.items) {
-                setCartCount(0);
-                return;
-            }
-
-            const totalQty = cart.items.reduce(
-                (sum: number, item: any) => sum + item.quantity,
+            const totalQty = (cart?.items ?? []).reduce(
+                (sum, item) => sum + (item?.quantity ?? 0),
                 0
             );
 
             setCartCount(totalQty);
+            localStorage.setItem("cartCount", totalQty.toString());
 
         } catch (error) {
-            console.log("Cart error:", error);
+            console.log("Cart fetch error:", error);
         }
     };
 
     useEffect(() => {
+        const savedCart = localStorage.getItem("cartCount");
+
+        if (savedCart) {
+            setCartCount(Number(savedCart));
+        }
+
         fetchCartCount();
     }, []);
 
     return (
-        <CartContext.Provider value={{ cartCount, increaseCart, fetchCartCount }}>
+        <CartContext.Provider
+            value={{ cartCount, fetchCartCount, increaseCart }}
+        >
             {children}
         </CartContext.Provider>
     );
 };
 
 export const useCart = () => {
+
     const context = useContext(CartContext);
 
     if (!context) {

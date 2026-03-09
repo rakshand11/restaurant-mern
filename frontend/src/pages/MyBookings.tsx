@@ -21,7 +21,7 @@ const MyBookings = () => {
   console.log(bookings);
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6">
+    <div className="max-w-5xl mx-auto mt-10  bg-red-50 p-6">
       <h2 className="text-2xl font-semibold mb-6 text-center">My Bookings</h2>
 
       <div className="space-y-6">

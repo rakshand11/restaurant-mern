@@ -37,7 +37,7 @@ const Signup = () => {
 
       toast.success("Registered Successfully 🎉");
 
-      navigate("/login");
+      navigate("/");
 
     } catch (error: any) {
       toast.error(
@@ -104,6 +104,7 @@ const Signup = () => {
             type="submit"
             disabled={loading}
             className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg"
+
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
