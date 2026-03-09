@@ -1,13 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut, ShoppingCart, UserCircle } from "lucide-react";
 import { useAuth } from "../context/AuthProvider";
+import { useCart } from "../context/CartProvider";
 import { useState } from "react";
 
 const Navbar = () => {
     const { user, setUser } = useAuth();
+    const { cartCount } = useCart(); // ✅ get cart count from context
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-
+    console.log("Cart Count:", cartCount);
     const logout = () => {
         localStorage.removeItem("user");
         setUser(null);
@@ -45,6 +47,13 @@ const Navbar = () => {
                             </Link>
 
                             <Link
+                                to="/book-table"
+                                className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                            >
+                                Book Table
+                            </Link>
+
+                            <Link
                                 to="/contact"
                                 className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
                             >
@@ -61,8 +70,9 @@ const Navbar = () => {
                                 className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
                             >
                                 <ShoppingCart size={22} className="text-gray-700" />
+
                                 <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
-                                    3
+                                    {cartCount}
                                 </span>
                             </button>
 
@@ -87,7 +97,7 @@ const Navbar = () => {
                                             </Link>
 
                                             <Link
-                                                to="/order"
+                                                to="/myorder"
                                                 onClick={() => setOpen(false)}
                                                 className="block px-4 py-2 hover:bg-gray-100"
                                             >

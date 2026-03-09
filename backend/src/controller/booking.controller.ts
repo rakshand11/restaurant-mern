@@ -3,25 +3,38 @@ import { bookingModel } from "../model/booking.model.js";
 
 export const createBooking = async (req: Request, res: Response) => {
     try {
-        const { id } = req.user
-        const { name, contact, note, date, time, numberOfPeople } = req.body
 
-        if (!name || !contact || !note || !date || !time || !numberOfPeople) {
-            res.status(400).json({
-                msg: "All fields are required"
-            })
-            return
+        // Check authentication
+        if (!req.user) {
+            return res.status(401).json({
+                msg: "Unauthorized"
+            });
         }
+
+        const { id } = req.user;
+        const { name, contact, note, date, time, numberOfPeople, email } = req.body;
+
+        // Validation
+        if (!name || !contact || !date || !time || !numberOfPeople || !email) {
+            return res.status(400).json({
+                msg: "All required fields must be filled"
+            });
+        }
+
+        // Check if slot already booked
         const existingBooking = await bookingModel.findOne({
-            date, time,
+            date,
+            time,
             status: { $ne: "pending" }
-        })
-        if (existingBooking) {
-            res.status(400).json({
-                msg: "This time slot is already booked"
-            })
+        });
 
+        if (existingBooking) {
+            return res.status(400).json({
+                msg: "This time slot is already booked"
+            });
         }
+
+        // Create booking
         const booking = await bookingModel.create({
             user: id,
             name,
@@ -29,87 +42,113 @@ export const createBooking = async (req: Request, res: Response) => {
             note,
             date,
             time,
+            email,
             numberOfPeople
-        })
-        if (!booking) {
-            res.status(400).json({
-                msg: "Booking not confirmed"
-            })
-            res.status(200).json({
-                msg: "Your booking is confirmed",
-                booking
-            })
-            return
-        }
+        });
+
+        return res.status(201).json({
+            msg: "Your booking is confirmed",
+            booking,
+            success: true
+        });
 
     } catch (error) {
-        res.status(500).json({
+
+        console.log(error);
+
+        return res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
-}
+};
+
+
 
 export const getUserBooking = async (req: Request, res: Response) => {
     try {
 
-
-        const { id } = req.user
-        const booking = await bookingModel.find({ user: id }).sort({ createdAt: -1 })
-        if (!booking) {
-            res.status(400).json({
-                msg: "User not found"
-            })
-            return
+        if (!req.user) {
+            return res.status(401).json({
+                msg: "Unauthorized"
+            });
         }
-        res.status(200).json({
-            msg: booking
-        })
-        return
+
+        const { id } = req.user;
+
+        const booking = await bookingModel
+            .find({ user: id })
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            bookings: booking,
+            success: true
+        });
+
     } catch (error) {
-        res.status(500).json({
+
+        console.log(error);
+
+        return res.status(500).json({
             msg: "Internal Server Error"
-        })
-        return
+        });
     }
-}
+};
+
+
 
 export const getAllBooking = async (req: Request, res: Response) => {
     try {
-        const { id } = req.user
-        const booking = await bookingModel.find().populate("user", "name email")
-        res.status(200).json({
-            msg: booking
-        })
-        return
+
+        const booking = await bookingModel
+            .find()
+            .populate("user", "name email");
+
+        return res.status(200).json({
+            bookings: booking,
+            success: true
+        });
+
     } catch (error) {
-        res.status(500).json({
+
+        console.log(error);
+
+        return res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
-}
+};
+
+
 
 export const updateBookingStatus = async (req: Request, res: Response) => {
     try {
-        const { bookingId } = req.params
-        const { status } = req.body
-        const booking = await bookingModel.findById(bookingId)
+
+        const { bookingId } = req.params;
+        const { status } = req.body;
+
+        const booking = await bookingModel.findById(bookingId);
+
         if (!booking) {
-            res.status(400).json({
-                msg: "Booking cant find"
-            })
-            return
+            return res.status(404).json({
+                msg: "Booking not found"
+            });
         }
-        booking.status = status
-        await booking.save()
-        res.status(200).json({
-            msg: "Booking updated successfully"
-        })
+
+        booking.status = status;
+
+        await booking.save();
+
+        return res.status(200).json({
+            msg: "Booking updated successfully",
+            success: true
+        });
+
     } catch (error) {
-        res.status(500).json({
+
+        console.log(error);
+
+        return res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
-}
+};

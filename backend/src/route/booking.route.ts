@@ -5,6 +5,6 @@ import { createBooking, getAllBooking, getUserBooking, updateBookingStatus } fro
 export const bookingRouter = Router()
 
 bookingRouter.post("/create", authMiddleware, createBooking)
-bookingRouter.get("/booking", authMiddleware, getUserBooking)
+bookingRouter.get("/my-booking", authMiddleware, getUserBooking)
 bookingRouter.get("/bookings", adminOnly, getAllBooking)
 bookingRouter.put("/update/:bookingId", adminOnly, updateBookingStatus)

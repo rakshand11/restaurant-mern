@@ -22,6 +22,8 @@ import Category from "./pages/Admin/Category";
 import Menus from "./pages/Admin/Menus";
 import Orders from "./pages/Admin/Orders";
 import Bookings from "./pages/Admin/Bookings";
+import MenuDetails from "./pages/MenuDetails";
+import Checkout from "./pages/Checkout";
 
 
 const AppContent = () => {
@@ -29,28 +31,7 @@ const AppContent = () => {
   const adminPath = location.pathname.includes("admin");
   const { admin } = useAuth();
   console.log("Admin:", admin);
-  // #region agent log
-  fetch("http://127.0.0.1:7866/ingest/682cf489-24f8-4080-90fa-ff7e30265dc4", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "84194c",
-    },
-    body: JSON.stringify({
-      sessionId: "84194c",
-      runId: "admin-debug-1",
-      hypothesisId: "H1",
-      location: "src/App.tsx:32",
-      message: "AppContent admin route state",
-      data: {
-        pathname: location.pathname,
-        adminPath,
-        hasAdmin: !!admin,
-      },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => { });
-  // #endregion agent log
+
 
   return (
     <div>
@@ -62,11 +43,13 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/menu-details/:id" element={<MenuDetails />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/booktable" element={<BookTable />} />
+        <Route path="/book-table" element={<BookTable />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/bookings" element={<MyBookings />} />
-        <Route path="/order" element={<MyOrders />} />
+        <Route path="/myorder" element={<MyOrders />} />
+        <Route path="/checkout" element={<Checkout />} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={admin ? <AdminLayout /> : <AdminLogin />}>

@@ -6,4 +6,4 @@ export const cartRouter = Router()
 
 cartRouter.post("/add", authMiddleware, addToCart)
 cartRouter.get("/get", authMiddleware, getCart)
-cartRouter.delete("/delete", authMiddleware, removeCart)
+cartRouter.delete("/delete/:menuItemId", authMiddleware, removeCart)

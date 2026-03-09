@@ -3,41 +3,46 @@ import { menuModel } from "../model/menu.model.js";
 import { cartModel } from "../model/cart.model.js";
 
 export const addToCart = async (req: Request, res: Response) => {
-
     try {
-        const { menuItemId, quantity } = req.body
-        const { id } = req.user
-        const menuItem = await menuModel.findById(menuItemId)
-        if (!menuItem) {
-            res.status(404).json({
+        const { menuItemId, quantity } = req.body;
+        const userId = req.user._id;
 
+        const menuItem = await menuModel.findById(menuItemId);
+
+        if (!menuItem) {
+            return res.status(404).json({
                 msg: "Menu Item not found"
-            })
-            return
+            });
         }
-        let cart = await cartModel.findOne({ user: id })
+
+        let cart = await cartModel.findOne({ user: userId });
+
         if (!cart) {
-            cart = new cartModel({ user: id, items: [] })
+            cart = new cartModel({ user: userId, items: [] });
         }
-        const existingItem = cart.items.find((item) => item.menuItem.toString() === menuItemId)
+
+        const existingItem = cart.items.find(
+            (item) => item.menuItem.toString() === menuItemId
+        );
+
         if (existingItem) {
-            existingItem.quantity += quantity
+            existingItem.quantity += quantity;
         } else {
-            cart.items.push({ menuItem: menuItemId, quantity })
+            cart.items.push({ menuItem: menuItemId, quantity });
         }
-        await cart.save()
+
+        await cart.save();
+
         res.status(200).json({
-            msg: "Item added to Cart"
-        })
-        return
+            msg: "Item added to cart"
+        });
+
     } catch (error) {
         res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
-
-}
+};
 
 export const getCart = async (req: Request, res: Response) => {
     try {
@@ -67,7 +72,7 @@ export const getCart = async (req: Request, res: Response) => {
 export const removeCart = async (req: Request, res: Response) => {
     try {
         const { id } = req.user
-        const { menuItemId } = req.body
+        const { menuItemId } = req.params
 
         const cart = await cartModel.findOne({ user: id })
         if (!cart) {

@@ -35,7 +35,8 @@ export const placeOrder = async (req: Request, res: Response) => {
         await cart.save()
         res.status(201).json({
             msg: "Your order is placed",
-            order: newOrder
+            order: newOrder,
+            success: true
         })
         return
     } catch (error) {
@@ -52,7 +53,8 @@ export const getOrder = async (req: Request, res: Response) => {
         const { id } = req.user
         const order = await orderModel.findOne({ user: id }).populate("user").sort({ createdAt: -1 })
         res.status(200).json({
-            msg: order
+            msg: order,
+            success: true
         })
         return
     } catch (error) {
@@ -68,12 +70,15 @@ export const getAllOrders = async (req: Request, res: Response) => {
     try {
         const allOrders = await orderModel.find().populate("user").sort({ createdAt: -1 })
         res.status(200).json({
-            msg: allOrders
+            success: true,
+            orders: allOrders
+
         })
         return
     } catch (error) {
         res.status(500).json({
             msg: "Internal server error"
+
         })
         return
     }
@@ -84,6 +89,7 @@ export const orderStatusUpdate = async (req: Request, res: Response) => {
         const { orderId } = req.params
         const { status } = req.body
         const order = await orderModel.findById(orderId)
+        console.log("Updating order:", orderId, "to status:", status);
         if (!order) {
             res.status(400).json({
                 msg: "Order not found"
@@ -93,7 +99,8 @@ export const orderStatusUpdate = async (req: Request, res: Response) => {
         order.status = status
         await order.save()
         res.status(200).json({
-            msg: "Order is updated successfully"
+            msg: "Order is updated successfully",
+            order
         })
         return
 

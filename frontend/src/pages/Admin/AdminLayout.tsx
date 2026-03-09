@@ -11,7 +11,7 @@ const AdminLayout = () => {
         { name: "Orders", path: "/admin/orders", icon: ShoppingBag },
         { name: "All Menus", path: "/admin/menus", icon: Utensils },
         { name: "All Categories", path: "/admin/category", icon: Grid3X3 },
-        { name: "Bookings", Path: "/admin/bookings", icon: BookAIcon }
+        { name: "Bookings", path: "/admin/bookings", icon: BookAIcon }
     ];
 
     const isActive = (path: string, exact = false) => {

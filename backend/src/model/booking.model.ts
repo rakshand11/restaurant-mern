@@ -14,6 +14,10 @@ const bookingSchema = new Schema({
         type: Number,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     numberOfPeople: {
         type: String,
         required: true,
@@ -33,7 +37,7 @@ const bookingSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ["Pending", "Approved", "Cancelled"],
+        enum: ["pending", "approved", "cancelled"],
         default: "pending"
     }
 }, { timestamps: true })

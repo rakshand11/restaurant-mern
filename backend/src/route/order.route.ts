@@ -5,6 +5,6 @@ import { getAllOrders, getOrder, orderStatusUpdate, placeOrder } from "../contro
 export const orderRouter = Router()
 
 orderRouter.post("/place", authMiddleware, placeOrder)
-orderRouter.get("/order", authMiddleware, getOrder)
+orderRouter.get("/get", authMiddleware, getOrder)
 orderRouter.get("/orders", adminOnly, getAllOrders)
 orderRouter.put("/update-status/:orderId", adminOnly, orderStatusUpdate)

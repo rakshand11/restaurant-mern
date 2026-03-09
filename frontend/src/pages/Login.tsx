@@ -30,7 +30,8 @@ const Login = () => {
 
       const res = await axios.post(
         "http://localhost:3000/user/login",
-        formData
+        formData,
+        { withCredentials: true }
       );
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
