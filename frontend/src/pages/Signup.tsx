@@ -49,7 +49,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="py-20 flex items-center justify-center">
+    <div className="py-20 flex items-center justify-center bg-red-50" >
       <div className="bg-black w-full max-w-md p-8 rounded-2xl shadow-xl">
 
         <h2 className="text-2xl font-bold text-center mb-6 text-white">

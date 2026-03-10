@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Hero from '../components/Hero'
 import Menu from '../components/Menu'
 import Categories from '../components/Categories'

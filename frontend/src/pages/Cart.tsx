@@ -3,6 +3,8 @@ import { IndianRupee, X } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartProvider";
+
 
 interface CartItem {
   _id: string;
@@ -23,6 +25,7 @@ const Cart = () => {
   const [cart, setCart] = useState<CartData | null>(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
+  const { fetchCartCount } = useCart()
 
   // Fetch cart from backend
   const fetchCartData = async () => {
@@ -59,7 +62,8 @@ const Cart = () => {
         withCredentials: true,
       });
       toast.success("Item removed from cart");
-      fetchCartData();
+      await fetchCartData();
+      await fetchCartCount()
     } catch (error) {
       console.log(error);
       toast.error("Failed to remove item");

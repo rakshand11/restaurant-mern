@@ -61,6 +61,7 @@ const MenuDetails = () => {
 
             toast.success(res.data.msg || "Added to cart");
             increaseCart(quantity);
+            navigate("/cart")
         } catch (error: unknown) {
             const err = error as { response?: { status?: number; data?: { msg?: string } } };
             const status = err.response?.status;

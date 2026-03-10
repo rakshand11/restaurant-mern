@@ -24,10 +24,11 @@ const Orders = () => {
         }
     };
     useEffect(() => {
+        console.log("Admin value:", admin);
         if (admin) {
             fetchOrders()
         }
-    }, [])
+    }, [admin])
 
     const handleStatusChange = async (orderId, newStatus) => {
         setLoading(true);

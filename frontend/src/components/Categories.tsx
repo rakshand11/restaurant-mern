@@ -10,7 +10,7 @@ interface Category {
 }
 
 const Categories = () => {
-    const [category, setCategory] = useState<Category[]>([]);
+    const [category, setCategory] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {

@@ -10,6 +10,7 @@ const Navbar = () => {
     const { cartCount } = useCart();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const { fetchCartCount } = useCart()
 
     const logout = async () => {
         try {
@@ -17,6 +18,7 @@ const Navbar = () => {
             localStorage.removeItem("user");
             setUser(null);
             setOpen(false);
+            fetchCartCount()
             navigate("/");
         } catch (error) {
             console.log("Logout error", error);

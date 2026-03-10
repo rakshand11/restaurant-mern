@@ -26,7 +26,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const increaseCart = (qty: number) => {
         setCartCount((prev) => {
             const newCount = prev + qty;
-            localStorage.setItem("cartCount", newCount.toString());
             return newCount;
         });
     };
@@ -46,20 +45,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             );
 
             setCartCount(totalQty);
-            localStorage.setItem("cartCount", totalQty.toString());
 
         } catch (error) {
             console.log("Cart fetch error:", error);
+            setCartCount(0)
         }
     };
 
     useEffect(() => {
-        const savedCart = localStorage.getItem("cartCount");
-
-        if (savedCart) {
-            setCartCount(Number(savedCart));
-        }
-
         fetchCartCount();
     }, []);
 

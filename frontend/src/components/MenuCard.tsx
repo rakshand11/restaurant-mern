@@ -2,6 +2,7 @@ import { IndianRupee, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useCart } from "../context/CartProvider";
 
 interface MenuItem {
     _id: string;
@@ -13,30 +14,43 @@ interface MenuItem {
 }
 
 const MenuCard = ({ menu }: { menu: MenuItem }) => {
+
     const navigate = useNavigate();
+    const { fetchCartCount } = useCart(); // get cart updater
 
     const addToCart = async (menuId: string) => {
         try {
+
             const res = await axios.post(
                 "http://localhost:3000/cart/add",
                 {
                     menuItemId: menuId,
-                    quantity: 1,
+                    quantity: 1
                 },
                 { withCredentials: true }
             );
 
+            // update cart count instantly
+            await fetchCartCount();
+
             toast.success(res.data.msg || "Added to cart");
+
         } catch (error: unknown) {
-            const err = error as { response?: { status?: number; data?: { msg?: string } } };
+
+            const err = error as {
+                response?: { status?: number; data?: { msg?: string } };
+            };
+
             const status = err.response?.status;
             const msg = err.response?.data?.msg;
 
             if (status === 401) {
                 toast.error("Login required");
-            } else if (msg) {
+            }
+            else if (msg) {
                 toast.error(msg);
-            } else {
+            }
+            else {
                 toast.error("Something went wrong");
             }
         }
@@ -59,11 +73,21 @@ const MenuCard = ({ menu }: { menu: MenuItem }) => {
 
             {/* CONTENT */}
             <div className="p-5">
-                <h3 className="text-xl font-bold">{menu.name}</h3>
-                <p className="text-gray-600 text-sm">{menu.description}</p>
+
+                <h3 className="text-xl font-bold">
+                    {menu.name}
+                </h3>
+
+                <p className="text-gray-600 text-sm">
+                    {menu.description}
+                </p>
 
                 <div className="flex items-center justify-between mt-4">
-                    <p className="text-2xl font-bold flex items-center gap-1"><IndianRupee size={20} />{menu.price}</p>
+
+                    <p className="text-2xl font-bold flex items-center gap-1">
+                        <IndianRupee size={20} />
+                        {menu.price}
+                    </p>
 
                     <button
                         onClick={() => addToCart(menu._id)}
@@ -76,8 +100,11 @@ const MenuCard = ({ menu }: { menu: MenuItem }) => {
                         <ShoppingCart className="w-4 h-4" />
                         Add
                     </button>
+
                 </div>
+
             </div>
+
         </div>
     );
 };

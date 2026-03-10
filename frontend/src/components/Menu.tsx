@@ -23,13 +23,13 @@ const Menu = () => {
     }, []);
 
     useEffect(() => {
-        if (searchQuery === "") {
-            setFilteredMenus(menu);
+        if (searchQuery === "") {      //if user hasn't typed anything
+            setFilteredMenus(menu);    //showing them the full menu
         } else {
             const filtered = menu.filter((item) =>
                 item.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
-            setFilteredMenus(filtered);
+            setFilteredMenus(filtered);  // update menu to show only the items matching the search
         }
     }, [searchQuery, menu]);
 
