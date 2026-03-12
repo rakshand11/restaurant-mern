@@ -17,7 +17,7 @@ const Categories = () => {
         let cancelled = false;
 
 
-        axios.get("http://localhost:3000/category/get", { withCredentials: true })
+        axios.get("http://3.110.195.60:3000/category/get", { withCredentials: true })
             .then((res) => {
                 if (!cancelled) setCategory(res.data.category ?? []);
             })

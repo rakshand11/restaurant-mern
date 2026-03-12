@@ -24,7 +24,7 @@ const BookTable = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/booking/create",
+        "http://3.110.195.60:3000/booking/create",
         formData,
         { withCredentials: true }
       );

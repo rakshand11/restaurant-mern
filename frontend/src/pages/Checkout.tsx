@@ -21,7 +21,7 @@ const Checkout = () => {
   const fetchCart = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3000/cart/get",
+        "http://3.110.195.60:3000/cart/get",
         { withCredentials: true }
       );
 
@@ -54,7 +54,7 @@ const Checkout = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/order/place",
+        "http://3.110.195.60:3000/order/place",
         { address, paymentMethod },
         { withCredentials: true }
       );

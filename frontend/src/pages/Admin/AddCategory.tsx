@@ -28,7 +28,7 @@ const AddCategory = () => {
             if (file) formData.append("image", file);
 
             const { data } = await axios.post(
-                "http://localhost:3000/category/create",
+                "http://3.110.195.60:3000/category/create",
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },

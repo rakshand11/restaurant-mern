@@ -28,7 +28,7 @@ const MyOrders = () => {
 
   const fetchMyOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/order/get", {
+      const { data } = await axios.get("http://3.110.195.60:3000/order/get", {
         withCredentials: true
       });
 

@@ -7,7 +7,7 @@ const MyBookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/booking/my-booking", { withCredentials: true });
+      const { data } = await axios.get("http://3.110.195.60:3000/booking/my-booking", { withCredentials: true });
       if (data.success) {
         setBookings(data.bookings);
       }

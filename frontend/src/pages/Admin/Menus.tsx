@@ -22,7 +22,7 @@ const Menus = () => {
     const deleteMenu = async (id: string) => {
 
         try {
-            const { data } = await axios.delete(`http://localhost:3000/menu/delete/${id}`,
+            const { data } = await axios.delete(`http://3.110.195.60:3000/menu/delete/${id}`,
                 { withCredentials: true })
 
             toast.success(data.msg || "Category deleted successfully")
@@ -34,7 +34,7 @@ const Menus = () => {
 
     const getMenu = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/menu/get",
+            const res = await axios.get("http://3.110.195.60:3000/menu/get",
                 { withCredentials: true }
             )
             setMenu(res.data.items)

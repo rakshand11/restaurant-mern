@@ -48,7 +48,7 @@ const AdminLogin = () => {
             setLoading(true);
 
             const res = await axios.post(
-                "http://localhost:3000/user/admin/login",
+                "http://3.110.195.60:3000/user/admin/login",
                 formData,
                 { withCredentials: true }
             );

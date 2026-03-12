@@ -36,7 +36,7 @@ const Cart = () => {
   // Fetch cart from backend
   const fetchCartData = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/cart/get", {
+      const res = await axios.get("http://3.110.195.60:3000/cart/get", {
         withCredentials: true,
       });
 
@@ -71,7 +71,7 @@ const Cart = () => {
 
   const removeFromCart = async (menuId: string) => {
     try {
-      await axios.delete(`http://localhost:3000/cart/delete/${menuId}`, {
+      await axios.delete(`http://3.110.195.60:3000/cart/delete/${menuId}`, {
         withCredentials: true,
       });
       toast.success("Item removed from cart");

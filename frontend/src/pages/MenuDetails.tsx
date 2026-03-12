@@ -29,7 +29,7 @@ const MenuDetails = () => {
         let cancelled = false;
 
         axios
-            .get("http://localhost:3000/menu/get")
+            .get("http://3.110.195.60:3000/menu/get")
             .then((res) => {
                 if (cancelled) return;
                 const items: MenuItem[] = res.data?.items ?? [];
@@ -51,7 +51,7 @@ const MenuDetails = () => {
         setIsAdding(true);
         try {
             const res = await axios.post(
-                "http://localhost:3000/cart/add",
+                "http://3.110.195.60:3000/cart/add",
                 { menuItemId: menu._id, quantity },
                 { withCredentials: true }
             );
@@ -207,8 +207,8 @@ const MenuDetails = () => {
                                 disabled={!menu.isAvailabel || isAdding}
                                 onClick={addToCart}
                                 className={`cursor-pointer w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${menu.isAvailabel && !isAdding
-                                        ? "bg-white text-yellow-600 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
-                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                    ? "bg-white text-yellow-600 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
+                                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                     }`}
                             >
                                 <ShoppingCart className="w-6 h-6" />

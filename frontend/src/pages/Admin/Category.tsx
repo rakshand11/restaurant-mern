@@ -17,7 +17,7 @@ const Category = () => {
     const deleteCategory = async (id: string) => {
 
         try {
-            const { data } = await axios.delete(`http://localhost:3000/category/delete/${id}`,
+            const { data } = await axios.delete(`http://3.110.195.60:3000/category/delete/${id}`,
                 { withCredentials: true })
 
             toast.success(data.msg || "Category deleted successfully")
@@ -29,7 +29,7 @@ const Category = () => {
 
     const getCategories = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/category/get")
+            const res = await axios.get("http://3.110.195.60:3000/category/get")
             setCategory(res.data.category)
         } catch (error) {
             console.log(error)

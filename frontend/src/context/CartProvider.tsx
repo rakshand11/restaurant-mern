@@ -32,7 +32,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const fetchCartCount = async () => {
         try {
             const res = await axios.get(
-                "http://localhost:3000/cart/get",
+                "http://3.110.195.60:3000/cart/get",
                 { withCredentials: true }
             );
 
