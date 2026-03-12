@@ -25,11 +25,12 @@ const AdminLayout = () => {
         menuItems.find((item) => location.pathname === item.path)?.name ||
         "Admin Panel";
 
+
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-red-100">
 
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-lg">
+            <aside className="w-64 bg-yellow-300 shadow-lg">
                 <div className="p-6 border-b">
                     <h2 className="text-xl font-bold text-gray-800">Admin Panel</h2>
                 </div>
@@ -43,7 +44,7 @@ const AdminLayout = () => {
                             <Link
                                 key={item.name}
                                 to={item.path}
-                                className={`flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-gray-100 transition ${active ? "bg-blue-50 border-r-4 border-blue-500 text-blue-600" : ""
+                                className={`flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-yellow-100 transition ${active ? "bg-blue-50 border-r-4 border-blue-500 text-blue-600" : ""
                                     }`}
                             >
                                 <Icon size={18} />

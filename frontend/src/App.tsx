@@ -30,7 +30,7 @@ const AppContent = () => {
   const location = useLocation();
   const adminPath = location.pathname.includes("admin");
   const { admin } = useAuth();
-  console.log("Admin:", admin);
+
 
 
   return (

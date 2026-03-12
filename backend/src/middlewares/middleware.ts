@@ -72,14 +72,13 @@ export const adminOnly = async (req: Request, res: Response, next: NextFunction)
         })
         return
     }
-    console.log("Admin token:", token)
+
+
 
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || "") as JwtPayload
         req.admin = decoded
-        console.log("Decoded token:", decoded)
-        console.log("ENV ADMIN:", process.env.ADMIN_EMAIL)
         if (req.admin?.email === process.env.ADMIN_EMAIL) {
             next()
         } else {

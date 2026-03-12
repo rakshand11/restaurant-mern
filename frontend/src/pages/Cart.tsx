@@ -25,7 +25,13 @@ const Cart = () => {
   const [cart, setCart] = useState<CartData | null>(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  const { fetchCartCount } = useCart()
+  const { fetchCartCount } = useCart();
+
+  // ✅ Discount calculations
+  const discountApplied = totalPrice > 1000;
+  const discount = discountApplied ? totalPrice * 0.25 : 0;
+  const finalAmount = totalPrice - discount;
+  const amountNeeded = Math.max(0, 1000 - totalPrice);
 
   // Fetch cart from backend
   const fetchCartData = async () => {
@@ -34,20 +40,27 @@ const Cart = () => {
         withCredentials: true,
       });
 
-      const cartData: CartData = res.data.msg;
+      const cartData: CartData | null = res.data.cart;
+
+      if (!cartData) {
+        setCart({ items: [] });
+        setTotalPrice(0);
+        return;
+      }
 
       setCart(cartData);
 
-      // Calculate total safely
       const total = (cartData.items ?? []).reduce(
-        (sum, item) => sum + (item.menuItem?.price ?? 0) * (item.quantity ?? 0),
+        (sum, item) =>
+          sum + (item.menuItem?.price ?? 0) * (item.quantity ?? 0),
         0
       );
+
       setTotalPrice(total);
     } catch (error) {
       console.log("Cart fetch error:", error);
       toast.error("Failed to load cart");
-      setCart(null);
+      setCart({ items: [] });
       setTotalPrice(0);
     }
   };
@@ -63,7 +76,7 @@ const Cart = () => {
       });
       toast.success("Item removed from cart");
       await fetchCartData();
-      await fetchCartCount()
+      await fetchCartCount();
     } catch (error) {
       console.log(error);
       toast.error("Failed to remove item");
@@ -160,15 +173,40 @@ const Cart = () => {
         </table>
       </div>
 
+      {/* ✅ Discount nudge — show when below ₹1000 */}
+      {!discountApplied && (
+        <div className="mt-6 bg-orange-50 border border-orange-200 rounded-xl px-6 py-3 text-orange-700 text-sm font-medium">
+          🛒 Add <span className="font-bold">₹{amountNeeded.toFixed(2)}</span> more to unlock 25% off!
+        </div>
+      )}
+
+      {/* ✅ Discount applied banner */}
+      {discountApplied && (
+        <div className="mt-6 bg-green-50 border border-green-200 rounded-xl px-6 py-3 text-green-700 text-sm font-medium">
+          🎉 You unlocked <span className="font-bold">25% off!</span> You save ₹{discount.toFixed(2)}
+        </div>
+      )}
+
       {/* Total & Checkout */}
       <div className="flex justify-between items-center mt-10 border-t pt-6">
-        <h3 className="text-2xl font-bold flex items-center gap-2">
-          Total:
-          <span className="text-green-600 flex items-center gap-1">
-            <IndianRupee size={20} />
-            {totalPrice}
-          </span>
-        </h3>
+        <div className="flex flex-col gap-1">
+
+          {/* ✅ Show original total strikethrough when discount applied */}
+          {discountApplied && (
+            <span className="text-gray-400 line-through text-sm flex items-center gap-1">
+              <IndianRupee size={14} />
+              {totalPrice.toFixed(2)}
+            </span>
+          )}
+
+          <h3 className="text-2xl font-bold flex items-center gap-2">
+            Total:
+            <span className="text-green-600 flex items-center gap-1">
+              <IndianRupee size={20} />
+              {finalAmount.toFixed(2)}
+            </span>
+          </h3>
+        </div>
 
         <button
           onClick={() => navigate("/checkout")}

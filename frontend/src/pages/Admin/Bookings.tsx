@@ -36,8 +36,8 @@ const Bookings = () => {
 
 
             if (data.success) {
-                toast.success(data.message);
-                console.log("Update response:", data);
+                toast.success(data.message || "Updated status");
+
                 fecthBookings();
             } else {
                 toast.error(data.message);

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const orderScehma = new Schema({
+const orderSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "user",
@@ -28,6 +28,18 @@ const orderScehma = new Schema({
         type: Number,
         required: true
     },
+    discount: {
+        type: Number,
+        default: 0
+    },
+    discountApplied: {
+        type: Boolean,
+        default: false
+    },
+    finalAmount: {
+        type: Number,
+        required: true
+    },
     status: {
         type: String,
         enum: ["pending", "preparing", "delivered"],
@@ -40,4 +52,4 @@ const orderScehma = new Schema({
 
 
 }, { timestamps: true })
-export const orderModel = mongoose.model("order", orderScehma)
+export const orderModel = mongoose.model("order", orderSchema)

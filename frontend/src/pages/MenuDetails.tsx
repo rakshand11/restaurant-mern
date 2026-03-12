@@ -22,6 +22,7 @@ const MenuDetails = () => {
     const [menu, setMenu] = useState<MenuItem | null>(null);
     const [quantity, setQuantity] = useState(1);
     const { increaseCart } = useCart();
+    const [isAdding, setIsAdding] = useState(false)
 
 
     useEffect(() => {
@@ -47,8 +48,8 @@ const MenuDetails = () => {
     }, [id]);
 
     const addToCart = async () => {
-        if (!menu) return;
-
+        if (!menu || !isAdding) return;
+        setIsAdding(true)
         try {
             const res = await axios.post(
                 "http://localhost:3000/cart/add",
@@ -97,6 +98,8 @@ const MenuDetails = () => {
             </div>
         );
     }
+
+
 
     return (
         <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
@@ -202,7 +205,7 @@ const MenuDetails = () => {
                             </div>
 
                             <button
-                                disabled={!menu.isAvailabel}
+                                disabled={!menu.isAvailabel || isAdding}
                                 onClick={addToCart}
                                 className={` cursor-pointer w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${menu.isAvailabel
                                     ? "bg-white text-yellow-600 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
@@ -210,7 +213,7 @@ const MenuDetails = () => {
                                     }`}
                             >
                                 <ShoppingCart className="w-6 h-6" />
-                                {menu.isAvailabel ? "Add to Cart" : "Unavailable"}
+                                {menu.isAvailabel ? "Unavailabel" : isAdding ? "Adding.." : "Add to Cart"}
                             </button>
                         </div>
                     </div>

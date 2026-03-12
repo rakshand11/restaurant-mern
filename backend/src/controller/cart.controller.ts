@@ -2,18 +2,19 @@ import { Request, Response } from "express";
 import { menuModel } from "../model/menu.model.js";
 import { cartModel } from "../model/cart.model.js";
 
+
+// ADD TO CART
 export const addToCart = async (req: Request, res: Response) => {
     try {
         const { menuItemId, quantity } = req.body;
-        const userId = req.user
-        if (!userId) {
+        const { id } = req.user;
+
+        if (!id) {
             return res.status(401).json({
                 msg: "Unauthorized"
             });
         }
-        console.log("User:", req.user);
-        console.log("UserId:", req.userId);
-        console.log("Body:", req.body);
+
         const menuItem = await menuModel.findById(menuItemId);
 
         if (!menuItem) {
@@ -22,10 +23,10 @@ export const addToCart = async (req: Request, res: Response) => {
             });
         }
 
-        let cart = await cartModel.findOne({ user: userId });
+        let cart = await cartModel.findOne({ user: id });
 
         if (!cart) {
-            cart = new cartModel({ user: userId, items: [] });
+            cart = new cartModel({ user: id, items: [] });
         }
 
         const existingItem = cart.items.find(
@@ -35,7 +36,10 @@ export const addToCart = async (req: Request, res: Response) => {
         if (existingItem) {
             existingItem.quantity += quantity;
         } else {
-            cart.items.push({ menuItem: menuItemId, quantity });
+            cart.items.push({
+                menuItem: menuItemId,
+                quantity
+            });
         }
 
         await cart.save();
@@ -51,55 +55,70 @@ export const addToCart = async (req: Request, res: Response) => {
     }
 };
 
+
+
+// GET CART
 export const getCart = async (req: Request, res: Response) => {
     try {
+        const { id } = req.user;
 
+        const cart = await cartModel
+            .findOne({ user: id })
+            .populate("items.menuItem");
 
-        const { id } = req.user
-        const cart = await cartModel.findOne({ user: id }).populate("items.menuItem")
         if (!cart) {
-            res.status(401).json({
-                msg: "Cart not created"
-            })
-            return
+            return res.status(200).json({
+                items: []
+            });
         }
+
+        // ✅ Remove deleted menu items safely
+        const validItems = cart.items.filter((item: any) => item.menuItem !== null);
+
+        cart.set("items", validItems);   // important fix
+        await cart.save();
+
         res.status(200).json({
-            msg: cart
-        })
-        return
+            success: true,
+            cart
+        });
+
     } catch (error) {
         res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
+};
 
-}
 
+
+// REMOVE ITEM FROM CART
 export const removeCart = async (req: Request, res: Response) => {
     try {
-        const { id } = req.user
-        const { menuItemId } = req.params
+        const { id } = req.user;
+        const { menuItemId } = req.params;
 
-        const cart = await cartModel.findOne({ user: id })
+        const cart = await cartModel.findOne({ user: id });
+
         if (!cart) {
-            res.status(401).json({
+            return res.status(404).json({
                 msg: "Cart not found"
-            })
-            return
+            });
         }
+
         cart.items = cart.items.filter(
             (item: any) => item.menuItem.toString() !== menuItemId
-        ) as any
-        await cart.save()
+        ) as any;
+
+        await cart.save();
+
         res.status(200).json({
             msg: "Item removed"
-        })
-        return
+        });
+
     } catch (error) {
         res.status(500).json({
             msg: "Internal server error"
-        })
-        return
+        });
     }
-}
+};

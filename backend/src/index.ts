@@ -30,7 +30,7 @@ const connectToDB = async () => {
 connectToDB()
 connectCloudinary()
 
-app.use(express.json())
+
 app.use(cors({
     origin: ["http://localhost:5173"],
     credentials: true,
@@ -38,6 +38,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
 
 }))
+app.use(express.json())
 app.use(cookieParser())
 app.use("/user", userRouter)
 app.use("/category", categoryRoute)

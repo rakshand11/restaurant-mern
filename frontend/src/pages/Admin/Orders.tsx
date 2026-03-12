@@ -1,94 +1,117 @@
-import React, { useEffect, useState } from 'react'
-import { useAuth } from '../../context/AuthProvider'
-import axios from "axios"
-import toast from 'react-hot-toast'
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthProvider";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Orders = () => {
-    const [loading, setLoading] = useState()
-    const [orders, setOrders] = useState([])
-    const { admin } = useAuth()
+    const [loading, setLoading] = useState(false);
+    const [orders, setOrders] = useState([]);
+    const { admin } = useAuth();
 
     const fetchOrders = async () => {
         try {
-            const { data } = await axios.get("http://localhost:3000/order/orders", { withCredentials: true });
+            const { data } = await axios.get(
+                "http://localhost:3000/order/all-order",
+                { withCredentials: true }
+            );
 
-            console.log("dataa", data)
             if (data.success) {
-                setOrders(data.orders)
+                setOrders(data.orders);
             } else {
-                console.log(data.message)
+                console.log(data.message);
             }
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
+
     useEffect(() => {
-        console.log("Admin value:", admin);
         if (admin) {
-            fetchOrders()
+            fetchOrders();
         }
-    }, [admin])
+    }, [admin]);
 
     const handleStatusChange = async (orderId, newStatus) => {
         setLoading(true);
+
         try {
-            // Call backend API to update status
             await axios.put(
                 `http://localhost:3000/order/update-status/${orderId}`,
                 { status: newStatus },
                 { withCredentials: true }
             );
 
-            // Update the orders state locally so UI reflects change
             setOrders((prevOrders) =>
                 prevOrders.map((order) =>
                     order._id === orderId ? { ...order, status: newStatus } : order
                 )
             );
-            toast.success(orders.msg || "updated successfully")
+
+            toast.success("Status updated successfully");
         } catch (error) {
             console.error(error);
+            toast.error("Failed to update status");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className='py-24 px-3 sm:px-6'>
-            <h1 className='text-3xl font-bold text-centre my-3'>All Orders</h1>
-            <div className='border border-gray-400 max-w-5xl mx-auto p-3 rounded-lg'>
-                {/*Header */}
-                <div className='hidden md:grid grid-cols-5 font-semibold text-gray-700 mb-4'>
+        <div className="py-2 px-3 sm:px-6">
+            <h1 className="text-3xl font-bold text-center my-3 mb-4">All Orders</h1>
+
+            <div className="border border-gray-400 max-w-5xl mx-auto p-4 rounded-lg">
+
+                {/* Header */}
+                <div className="hidden md:grid grid-cols-5 font-semibold text-gray-700 mb-8">
                     <div>Name</div>
                     <div>Address</div>
                     <div>Total Amount</div>
                     <div>Payment Method</div>
                     <div>Status</div>
                 </div>
-                {/*Items */}
-                <ul className='space-y-4'>
+
+                {/* Orders */}
+                <ul className="space-y-6">
                     {orders.map((item) => (
-                        <li key={item._id} className='border rounded-lg p-3 md:p-2'>
-                            <div className='flex flex-col md:grid md:grid-cols-5 md:items-centre gap-2 md:gap-0'>
+                        <li key={item._id} className="border rounded-lg p-4">
+
+                            <div className="flex flex-col md:grid md:grid-cols-5 md:items-center gap-2">
+
                                 <p className="font-medium text-center md:text-left">
-                                    {item?.user.name}
+                                    {item?.user?.name}
                                 </p>
+
                                 <p className="font-medium text-center md:text-left">
                                     {item?.address}
                                 </p>
-                                <p className="text-gray-600 hidden md:block">
-                                    ${item?.totalAmount}
+
+                                <p className="text-gray-700 font-semibold text-center md:text-left">
+                                    ₹{item?.totalAmount?.toLocaleString("en-IN")}
                                 </p>
+                                {item?.discount > 0 && (
+                                    <p className="text-green-600">
+                                        <span className="font-medium">Discount:</span>{" "}
+                                        - ₹{item?.discount?.toLocaleString("en-IN")}
+                                    </p>
+                                )}
+
+                                <p className="font-semibold text-gray-800">
+                                    <span>Total Paid:</span>{" "}
+                                    ₹{item?.finalAmount?.toLocaleString("en-IN")}
+                                </p>
+
+
                                 <p className="text-gray-600 hidden md:block">
                                     {item.paymentMethod}
                                 </p>
 
-                                <div className="flex justify-center md:justify-start items-center gap-2 md:gap-5 mt-2 md:mt-0">
+                                <div className="flex justify-center md:justify-start items-center gap-2 mt-2 md:mt-0">
                                     <select
-                                        name="status"
-                                        value={item.status} // will now reflect updated state
-                                        onChange={(e) => handleStatusChange(item._id, e.target.value)}
+                                        value={item.status}
+                                        onChange={(e) =>
+                                            handleStatusChange(item._id, e.target.value)
+                                        }
                                         disabled={loading}
                                         className="border rounded-md px-3 py-2"
                                     >
@@ -98,37 +121,57 @@ const Orders = () => {
                                     </select>
                                 </div>
                             </div>
-                            {/* ✅ Render Menu Items */}
-                            <div className="mt-3">
-                                {item.items.map((menu, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-center gap-3 bg-gray-50 border rounded-lg p-2 my-2"
-                                    >
-                                        <img
-                                            src={menu?.menuItem?.image}
-                                            alt={menu?.menuItem?.name}
-                                            className="w-16 h-16 rounded object-cover"
-                                        />
-                                        <div>
-                                            <p className="font-semibold">{menu?.menuItem?.name}</p>
-                                            <p className="text-sm text-gray-600">
-                                                QTY:{menu?.quantity}
-                                            </p>
-                                            <p className="text-sm text-gray-600">
-                                                $:{menu?.menuItem?.price}
-                                            </p>
+
+                            {/* Menu Items */}
+                            <div className="mt-4 space-y-2">
+                                {item.items?.map((menu, index) => {
+
+                                    const price = menu?.menuItem?.price ?? 0;
+                                    const qty = menu?.quantity ?? 0;
+                                    const subtotal = price * qty;
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="flex items-center gap-3 bg-gray-50 border rounded-lg p-3"
+                                        >
+                                            <img
+                                                src={menu?.menuItem?.image}
+                                                alt={menu?.menuItem?.name}
+                                                className="w-16 h-16 rounded object-cover"
+                                            />
+
+                                            <div>
+
+                                                <p className="font-semibold">
+                                                    {menu?.menuItem?.name || "Item deleted"}
+                                                </p>
+
+                                                <p className="text-sm text-gray-600">
+                                                    QTY: {qty}
+                                                </p>
+
+                                                <p className="text-sm text-gray-600">
+                                                    Price: ₹{price.toLocaleString("en-IN")}
+                                                </p>
+
+                                                <p className="text-sm font-semibold text-gray-800">
+                                                    Subtotal: ₹{subtotal.toLocaleString("en-IN")}
+                                                </p>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
+
                         </li>
                     ))}
-
                 </ul>
+
             </div>
         </div>
-    )
+    );
+};
 
-}
-export default Orders
+export default Orders;

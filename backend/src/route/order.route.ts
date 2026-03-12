@@ -6,5 +6,5 @@ export const orderRouter = Router()
 
 orderRouter.post("/place", authMiddleware, placeOrder)
 orderRouter.get("/get", authMiddleware, getOrder)
-orderRouter.get("/orders", adminOnly, getAllOrders)
+orderRouter.get("/all-order", adminOnly, getAllOrders)
 orderRouter.put("/update-status/:orderId", adminOnly, orderStatusUpdate)

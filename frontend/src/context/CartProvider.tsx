@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import axios from "axios";
+import { useAuth } from "./AuthProvider";
 
 interface CartItem {
     quantity: number;
+    menuItem?: any;
 }
 
 interface Cart {
@@ -20,14 +22,11 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 
+    const { admin, user } = useAuth(); // ✅ get user too
     const [cartCount, setCartCount] = useState<number>(0);
 
-    // increase cart locally (used after add-to-cart)
     const increaseCart = (qty: number) => {
-        setCartCount((prev) => {
-            const newCount = prev + qty;
-            return newCount;
-        });
+        setCartCount((prev) => prev + qty);
     };
 
     const fetchCartCount = async () => {
@@ -37,7 +36,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 { withCredentials: true }
             );
 
-            const cart: Cart | null = res.data.msg;
+            const cart: Cart | null = res.data.cart;
 
             const totalQty = (cart?.items ?? []).reduce(
                 (sum, item) => sum + (item?.quantity ?? 0),
@@ -48,13 +47,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
         } catch (error) {
             console.log("Cart fetch error:", error);
-            setCartCount(0)
+            setCartCount(0);
         }
     };
 
     useEffect(() => {
+        if (admin) return;  // ✅ skip for admin
+        if (!user) return;  // ✅ skip if not logged in
         fetchCartCount();
-    }, []);
+    }, [admin, user]); // ✅ added user as dependency
 
     return (
         <CartContext.Provider
