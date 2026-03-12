@@ -3,11 +3,12 @@ import { User2, Mail, Lock } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useAuth } from "../context/AuthProvider";
 
 const Signup = () => {
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,12 +17,10 @@ const Signup = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedData = {
+    setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    };
-
-    setFormData(updatedData);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,18 +29,32 @@ const Signup = () => {
     try {
       setLoading(true);
 
+      // Step 1: Register
       await axios.post(
         "http://localhost:3000/user/register",
         formData
       );
 
-      toast.success("Registered Successfully 🎉");
+      // Step 2: Auto login after signup ✅
+      const loginRes = await axios.post(
+        "http://localhost:3000/user/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        { withCredentials: true } // ✅ sets the cookie
+      );
 
+      // Step 3: Save user in context and localStorage ✅
+      setUser(loginRes.data.user);
+      localStorage.setItem("user", JSON.stringify(loginRes.data.user));
+
+      toast.success("Registered Successfully 🎉");
       navigate("/");
 
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message || "Something went wrong ❌"
+        error.response?.data?.msg || "Something went wrong ❌"
       );
     } finally {
       setLoading(false);
@@ -49,7 +62,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="py-20 flex items-center justify-center bg-red-50" >
+    <div className="py-20 flex items-center justify-center bg-red-50">
       <div className="bg-black w-full max-w-md p-8 rounded-2xl shadow-xl">
 
         <h2 className="text-2xl font-bold text-center mb-6 text-white">
@@ -104,7 +117,6 @@ const Signup = () => {
             type="submit"
             disabled={loading}
             className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg"
-
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>

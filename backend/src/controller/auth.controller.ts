@@ -23,8 +23,25 @@ export const registerUser = async (req: Request, res: Response) => {
             email: email,
             password: hashedPassword
         })
+
+        // ✅ generate token after register
+        const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: "30d" })
+
+        // ✅ set cookie just like login
+        res.cookie("userToken", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 30 * 24 * 60 * 60 * 1000
+        })
+
         res.status(201).json({
-            msg: "User created successfully"
+            msg: "User created successfully",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            }
         })
         return
     } catch (error) {
@@ -34,7 +51,6 @@ export const registerUser = async (req: Request, res: Response) => {
         })
         return
     }
-
 }
 
 export const loginUser = async (req: Request, res: Response) => {
@@ -52,14 +68,13 @@ export const loginUser = async (req: Request, res: Response) => {
             res.status(401).json({ msg: "Invalid credentials" })
             return
         }
-        const userId = user._id
         const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: "30d" })
 
-        res.cookie("userToken", token, {      //stored the cookie in the name of  userToken
-            httpOnly: true,                   //js in the browser cannot access this cookie
-            secure: false,                    //cookie can be sent over http
+        res.cookie("userToken", token, {
+            httpOnly: true,
+            secure: false,
             sameSite: "lax",
-            maxAge: 30 * 24 * 60 * 60 * 1000 //duration of cookie
+            maxAge: 30 * 24 * 60 * 60 * 1000
         })
         res.status(200).json({
             msg: "Login successful",
@@ -68,7 +83,6 @@ export const loginUser = async (req: Request, res: Response) => {
                 name: user.name,
                 email: user.email
             }
-
         })
         return
     } catch (error) {
@@ -98,7 +112,6 @@ export const logoutUser = async (req: Request, res: Response) => {
     }
 };
 
-
 export const adminLogin = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body
@@ -112,14 +125,9 @@ export const adminLogin = async (req: Request, res: Response) => {
             return
         }
         const token = jwt.sign(
-            {
-                role: "admin",
-                email
-            },
+            { role: "admin", email },
             jwtsecret,
-            {
-                expiresIn: "1d"
-            }
+            { expiresIn: "1d" }
         )
 
         res.cookie("adminToken", token, {
@@ -127,9 +135,8 @@ export const adminLogin = async (req: Request, res: Response) => {
             secure: false,
             sameSite: "lax",
             maxAge: 30 * 24 * 60 * 60 * 1000
-
         })
-        // ✅ Send admin object to frontend
+
         return res.status(200).json({
             success: true,
             admin: {
@@ -148,7 +155,6 @@ export const adminLogin = async (req: Request, res: Response) => {
 }
 
 export const getProfile = async (req: Request, res: Response) => {
-
     try {
         const user = await userModel.findById(req.user.id).select("-password")
         if (!user) {
@@ -173,7 +179,6 @@ export const getProfile = async (req: Request, res: Response) => {
 
 export const getAllProfile = async (req: Request, res: Response) => {
     try {
-        const { id } = req.user
         const profiles = await userModel.find()
         res.status(200).json({
             msg: profiles

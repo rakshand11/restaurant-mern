@@ -13,13 +13,13 @@ const Hero = () => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/30"></div>
 
-      {/* Floating Cloud Highlight */}
-      <div className="absolute top-35 left-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
-        🍳 Live stream your food while the chef prepares it
+      {/* Floating Bubbles — hidden on mobile, visible on md+ */}
+      <div className="hidden md:block absolute top-35 left-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
+        🎉 25% off on orders above ₹1000
         <div className="absolute -bottom-2 left-6 w-4 h-4 bg-orange-400 rotate-45"></div>
       </div>
 
-      <div className="absolute top-35 right-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
+      <div className="hidden md:block absolute top-35 right-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
         Enjoy Our Dishes at Home — Delivery Available
         <div className="absolute -bottom-2 right-6 w-4 h-4 bg-orange-400 rotate-45"></div>
       </div>
@@ -30,9 +30,14 @@ const Hero = () => {
           Welcome to Our Restaurant
         </h1>
 
-        <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl mb-4 max-w-2xl mx-auto">
           Experience the taste of perfection — where every bite tells a story.
         </p>
+
+        {/* Mobile only discount badge */}
+        <div className="md:hidden inline-block bg-orange-400 text-black text-sm font-semibold px-4 py-2 rounded-full mb-6">
+          🎉 25% off on orders above ₹1000
+        </div>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button

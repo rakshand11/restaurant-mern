@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -22,8 +21,7 @@ const MenuDetails = () => {
     const [menu, setMenu] = useState<MenuItem | null>(null);
     const [quantity, setQuantity] = useState(1);
     const { increaseCart } = useCart();
-    const [isAdding, setIsAdding] = useState(false)
-
+    const [isAdding, setIsAdding] = useState(false);
 
     useEffect(() => {
         if (!id) return;
@@ -48,21 +46,19 @@ const MenuDetails = () => {
     }, [id]);
 
     const addToCart = async () => {
-        if (!menu || !isAdding) return;
-        setIsAdding(true)
+        if (!menu || isAdding) return; // ✅ fixed
+
+        setIsAdding(true);
         try {
             const res = await axios.post(
                 "http://localhost:3000/cart/add",
-                {
-                    menuItemId: menu._id,
-                    quantity,
-                },
+                { menuItemId: menu._id, quantity },
                 { withCredentials: true }
             );
 
             toast.success(res.data.msg || "Added to cart");
             increaseCart(quantity);
-            navigate("/cart")
+            navigate("/cart");
         } catch (error: unknown) {
             const err = error as { response?: { status?: number; data?: { msg?: string } } };
             const status = err.response?.status;
@@ -75,6 +71,8 @@ const MenuDetails = () => {
             } else {
                 toast.error("Something went wrong");
             }
+        } finally {
+            setIsAdding(false); // ✅ always reset
         }
     };
 
@@ -99,8 +97,6 @@ const MenuDetails = () => {
         );
     }
 
-
-
     return (
         <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
             {/* Back Button */}
@@ -115,9 +111,9 @@ const MenuDetails = () => {
             </div>
 
             {/* Main Content */}
-
             <div className="container mx-auto px-4 pb-16">
                 <div className="grid md:grid-cols-2 gap-12 items-start">
+
                     {/* Image Section */}
                     <div className="relative">
                         <div className="sticky top-8">
@@ -147,6 +143,7 @@ const MenuDetails = () => {
 
                     {/* Details Section */}
                     <div className="space-y-6">
+
                         {/* Title and Price */}
                         <div>
                             <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -159,6 +156,7 @@ const MenuDetails = () => {
                                 <span className="text-gray-500 text-lg">per item</span>
                             </div>
                         </div>
+
                         {/* Description */}
                         <div className="bg-gray-50 rounded-2xl p-6">
                             <h3 className="text-lg font-semibold text-gray-800 mb-3">
@@ -168,6 +166,7 @@ const MenuDetails = () => {
                                 {menu.description}
                             </p>
                         </div>
+
                         {/* Total, Quantity and Add to Cart */}
                         <div className="bg-linear-to-r from-yellow-400 to-yellow-500 rounded-2xl p-6 shadow-xl space-y-4">
                             <div className="flex items-center justify-between">
@@ -207,13 +206,13 @@ const MenuDetails = () => {
                             <button
                                 disabled={!menu.isAvailabel || isAdding}
                                 onClick={addToCart}
-                                className={` cursor-pointer w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${menu.isAvailabel
-                                    ? "bg-white text-yellow-600 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
-                                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                className={`cursor-pointer w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 ${menu.isAvailabel && !isAdding
+                                        ? "bg-white text-yellow-600 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-lg"
+                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                     }`}
                             >
                                 <ShoppingCart className="w-6 h-6" />
-                                {menu.isAvailabel ? "Unavailabel" : isAdding ? "Adding.." : "Add to Cart"}
+                                {!menu.isAvailabel ? "Unavailable" : isAdding ? "Adding..." : "Add to Cart"} {/* ✅ fixed */}
                             </button>
                         </div>
                     </div>
@@ -222,4 +221,5 @@ const MenuDetails = () => {
         </div>
     );
 };
+
 export default MenuDetails;

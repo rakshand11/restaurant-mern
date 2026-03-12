@@ -131,7 +131,7 @@ const Cart = () => {
                       </span>
                     </>
                   ) : (
-                    <span className="text-red-500">Item no longer available</span>
+                    <span className="text-red-500">Item no longer Availabel</span>
                   )}
                 </td>
 
