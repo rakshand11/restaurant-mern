@@ -39,13 +39,13 @@ const Signup = () => {
     try {
       setLoading(true);
 
-      // Step 1: Register
+      //  Register
       await axios.post(
         "https://api.rakshand.site/user/register",
         formData
       );
 
-      // Step 2: Auto login after signup
+      //  Auto login after signup
       const loginRes = await axios.post(
         "https://api.rakshand.site/user/login",
         {
@@ -55,7 +55,7 @@ const Signup = () => {
         { withCredentials: true }
       );
 
-      // Step 3: Save user in context and localStorage
+      // Save user in context and localStorage
       setUser(loginRes.data.user);
       localStorage.setItem("user", JSON.stringify(loginRes.data.user));
 
@@ -115,7 +115,7 @@ const Signup = () => {
             <input
               type="password"
               name="password"
-              placeholder="Password (6-72 characters)"
+              placeholder="Password (6-20 characters)"
               value={formData.password}
               onChange={handleChange}
               required
