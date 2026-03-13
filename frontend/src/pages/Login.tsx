@@ -29,7 +29,7 @@ const Login = () => {
       setLoading(true);
 
       const res = await axios.post(
-        "http://localhost:3000/user/login",
+        "https://api.rakshand.site/user/login",
         formData,
         { withCredentials: true }
       );
