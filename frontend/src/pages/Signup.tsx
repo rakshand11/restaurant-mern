@@ -26,6 +26,16 @@ const Signup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+    if (formData.password.length > 72) {
+      toast.error("Password is too long");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -35,17 +45,17 @@ const Signup = () => {
         formData
       );
 
-      // Step 2: Auto login after signup ✅
+      // Step 2: Auto login after signup
       const loginRes = await axios.post(
         "https://api.rakshand.site/user/login",
         {
           email: formData.email,
           password: formData.password,
         },
-        { withCredentials: true } // ✅ sets the cookie
+        { withCredentials: true }
       );
 
-      // Step 3: Save user in context and localStorage ✅
+      // Step 3: Save user in context and localStorage
       setUser(loginRes.data.user);
       localStorage.setItem("user", JSON.stringify(loginRes.data.user));
 
@@ -105,7 +115,7 @@ const Signup = () => {
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              placeholder="Password (6-72 characters)"
               value={formData.password}
               onChange={handleChange}
               required

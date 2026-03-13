@@ -25,6 +25,11 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (formData.password.length > 72) {
+      toast.error("Password is too long");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -35,13 +40,12 @@ const Login = () => {
       );
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      setUser(res.data.user); // ✅ updates Navbar instantly
-      console.log(res.data)
+      setUser(res.data.user);
       toast.success("Login Successfully 🎉");
       navigate("/");
 
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Login failed ❌");
+      toast.error(error.response?.data?.msg || "Login failed ❌");
     } finally {
       setLoading(false);
     }
