@@ -29,7 +29,7 @@ const MenuDetails = () => {
         let cancelled = false;
 
         axios
-            .get("http://3.110.195.60:3000/menu/get")
+            .get("https://api.rakshand.site/menu/get")
             .then((res) => {
                 if (cancelled) return;
                 const items: MenuItem[] = res.data?.items ?? [];
@@ -51,7 +51,7 @@ const MenuDetails = () => {
         setIsAdding(true);
         try {
             const res = await axios.post(
-                "http://3.110.195.60:3000/cart/add",
+                "https://api.rakshand.site/cart/add",
                 { menuItemId: menu._id, quantity },
                 { withCredentials: true }
             );

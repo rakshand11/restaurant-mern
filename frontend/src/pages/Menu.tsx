@@ -20,7 +20,7 @@ const Menu = () => {
     let cancelled = false;
 
     axios
-      .get("http://3.110.195.60:3000/menu/get")
+      .get("https://api.rakshand.site/menu/get")
       .then((res) => {
         const items: MenuItem[] = res.data?.items ?? [];
         if (!cancelled) setMenus(items);

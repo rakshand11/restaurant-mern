@@ -31,13 +31,13 @@ const Signup = () => {
 
       // Step 1: Register
       await axios.post(
-        "http://3.110.195.60:3000/user/register",
+        "https://api.rakshand.site/user/register",
         formData
       );
 
       // Step 2: Auto login after signup ✅
       const loginRes = await axios.post(
-        "http://3.110.195.60:3000/user/login",
+        "https://api.rakshand.site/user/login",
         {
           email: formData.email,
           password: formData.password,

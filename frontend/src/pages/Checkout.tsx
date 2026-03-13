@@ -21,7 +21,7 @@ const Checkout = () => {
   const fetchCart = async () => {
     try {
       const res = await axios.get(
-        "http://3.110.195.60:3000/cart/get",
+        "https://api.rakshand.site/cart/get",
         { withCredentials: true }
       );
 
@@ -54,7 +54,7 @@ const Checkout = () => {
 
     try {
       const { data } = await axios.post(
-        "http://3.110.195.60:3000/order/place",
+        "https://api.rakshand.site/order/place",
         { address, paymentMethod },
         { withCredentials: true }
       );

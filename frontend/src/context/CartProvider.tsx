@@ -32,7 +32,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const fetchCartCount = async () => {
         try {
             const res = await axios.get(
-                "http://3.110.195.60:3000/cart/get",
+                "https://api.rakshand.site/cart/get",
                 { withCredentials: true }
             );
 

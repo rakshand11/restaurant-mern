@@ -28,7 +28,7 @@ const AddCategory = () => {
             if (file) formData.append("image", file);
 
             const { data } = await axios.post(
-                "http://3.110.195.60:3000/category/create",
+                "https://api.rakshand.site/category/create",
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },

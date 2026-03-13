@@ -14,7 +14,7 @@ const Navbar = () => {
 
     const logout = async () => {
         try {
-            await axios.post("http://3.110.195.60:3000/user/logout", {}, { withCredentials: true });
+            await axios.post("https://api.rakshand.site/user/logout", {}, { withCredentials: true });
             localStorage.removeItem("user");
             setUser(null);
             setOpen(false);

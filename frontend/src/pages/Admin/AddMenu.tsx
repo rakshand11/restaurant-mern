@@ -20,7 +20,7 @@ const AddMenu = () => {
 
     const getCategories = async () => {
         try {
-            const res = await axios.get("http://3.110.195.60:3000/category/get")
+            const res = await axios.get("https://api.rakshand.site/category/get")
             setCategories(res.data.category)
         } catch (error) {
             console.log(error)
@@ -51,7 +51,7 @@ const AddMenu = () => {
             if (file) formData.append("image", file)
 
             const { data } = await axios.post(
-                "http://3.110.195.60:3000/menu/add",
+                "https://api.rakshand.site/menu/add",
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },

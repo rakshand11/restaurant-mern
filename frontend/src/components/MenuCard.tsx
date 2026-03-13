@@ -22,7 +22,7 @@ const MenuCard = ({ menu }: { menu: MenuItem }) => {
         try {
 
             const res = await axios.post(
-                "http://3.110.195.60:3000/cart/add",
+                "https://api.rakshand.site/cart/add",
                 {
                     menuItemId: menuId,
                     quantity: 1

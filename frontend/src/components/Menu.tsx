@@ -10,7 +10,7 @@ const Menu = () => {
 
     const getMenu = async () => {
         try {
-            const res = await axios.get("http://3.110.195.60:3000/menu/get");
+            const res = await axios.get("https://api.rakshand.site/menu/get");
             setMenu(res.data.items);
             setFilteredMenus(res.data.items);
         } catch (error) {
