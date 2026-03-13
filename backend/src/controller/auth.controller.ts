@@ -24,14 +24,12 @@ export const registerUser = async (req: Request, res: Response) => {
             password: hashedPassword
         })
 
-        // ✅ generate token after register
         const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: "30d" })
 
-        // ✅ set cookie just like login
         res.cookie("userToken", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,       // ✅
+            sameSite: "none",   // ✅
             maxAge: 30 * 24 * 60 * 60 * 1000
         })
 
@@ -72,8 +70,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
         res.cookie("userToken", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,       // ✅
+            sameSite: "none",   // ✅
             maxAge: 30 * 24 * 60 * 60 * 1000
         })
         res.status(200).json({
@@ -96,8 +94,8 @@ export const logoutUser = async (req: Request, res: Response) => {
     try {
         res.clearCookie("userToken", {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false
+            sameSite: "none",   // ✅
+            secure: true        // ✅
         });
 
         res.status(200).json({
@@ -132,8 +130,8 @@ export const adminLogin = async (req: Request, res: Response) => {
 
         res.cookie("adminToken", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,       // ✅
+            sameSite: "none",   // ✅
             maxAge: 30 * 24 * 60 * 60 * 1000
         })
 
