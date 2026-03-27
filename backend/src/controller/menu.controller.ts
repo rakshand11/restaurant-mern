@@ -5,12 +5,12 @@ import { v2 as cloudinary } from "cloudinary";
 export const addMenuItem = async (req: Request, res: Response) => {
     try {
         const { name, description, price, category } = req.body
-        console.log(req.body)
+
 
 
         if (!name || !description || !price || !category || !req.file) {
 
-            console.log(req.file)
+
             res.status(400).json({
                 msg: "All fields should be filled (name or description, price, category, image)"
             })

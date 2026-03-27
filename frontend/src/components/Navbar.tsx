@@ -25,6 +25,8 @@ const Navbar = () => {
         }
     };
 
+    
+
     return (
         <nav>
             <div className="bg-black shadow-md sticky top-0 z-50 py-3">

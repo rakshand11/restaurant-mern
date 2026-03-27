@@ -37,7 +37,6 @@ const AppContent = () => {
     <div>
       <Toaster />
       {!adminPath && <Navbar />}
-
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

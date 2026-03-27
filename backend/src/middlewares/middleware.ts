@@ -11,7 +11,6 @@ interface JwtPayload {
     email?: string
 }
 
-// Extend Express Request
 declare global {
     namespace Express {
         interface Request {
@@ -29,7 +28,7 @@ export const authMiddleware = async (
     next: NextFunction
 ) => {
     try {
-        // 🔐 Get token from cookie
+
         const token = req.cookies.userToken;
 
         if (!token) {
@@ -39,11 +38,7 @@ export const authMiddleware = async (
         }
 
         const jwtSecret = process.env.JWT_SECRET as string;
-
-        // ✅ Verify token
         const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-
-        // ✅ Find user in DB
         const user = await userModel.findById(decoded.userId);
 
         if (!user) {
@@ -52,7 +47,6 @@ export const authMiddleware = async (
             });
         }
 
-        // ✅ Attach to request
         req.user = user;
         req.userId = decoded.userId;
 
@@ -72,9 +66,6 @@ export const adminOnly = async (req: Request, res: Response, next: NextFunction)
         })
         return
     }
-
-
-
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || "") as JwtPayload
