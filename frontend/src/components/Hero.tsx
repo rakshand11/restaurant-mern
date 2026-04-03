@@ -7,54 +7,158 @@ const Hero = () => {
     <section
       className="relative h-[90vh] flex items-center justify-center bg-center bg-cover"
       style={{
-        backgroundImage: "url('/dishes.png')",
+        backgroundImage: "url('/black.jpg')",
+        fontFamily: "'Montserrat', sans-serif",
       }}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30"></div>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
+        .hero-btn-outline:hover { background: #b8965a !important; color: #0a0a0a !important; }
+        .hero-btn-fill:hover { background: #9a7a40 !important; border-color: #9a7a40 !important; }
+      `}</style>
 
-      {/* Floating Bubbles — hidden on mobile, visible on md+ */}
-      <div className="hidden md:block absolute top-35 left-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
-        🎉 25% off on orders above ₹1000
-        <div className="absolute -bottom-2 left-6 w-4 h-4 bg-orange-400 rotate-45"></div>
+      {/* Dark overlay */}
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.62)' }}></div>
+
+      {/* Floating bubbles — desktop only */}
+      <div className="hidden md:block absolute" style={{ top: '2.5rem', left: '2.5rem' }}>
+        <div style={{
+          background: 'rgba(250,248,244,0.06)',
+          border: '0.5px solid #b8965a',
+          color: '#e8dcc0',
+          padding: '0.75rem 1.25rem',
+          fontSize: 11,
+          letterSpacing: '0.12em',
+          maxWidth: 220,
+          lineHeight: 1.6,
+          position: 'relative',
+        }}>
+          <span style={{ color: '#b8965a', marginRight: 6, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' }}>Offer</span>
+          25% off on orders above ₹1000
+          <div style={{ position: 'absolute', bottom: -4, left: 16, width: 8, height: 8, background: '#b8965a', transform: 'rotate(45deg)' }}></div>
+        </div>
       </div>
 
-      <div className="hidden md:block absolute top-35 right-30 bg-orange-400 text-black px-5 py-3 rounded-2xl shadow-xl max-w-xs">
-        Enjoy Our Dishes at Home — Delivery Available
-        <div className="absolute -bottom-2 right-6 w-4 h-4 bg-orange-400 rotate-45"></div>
+      <div className="hidden md:block absolute" style={{ top: '2.5rem', right: '2.5rem' }}>
+        <div style={{
+          background: 'rgba(250,248,244,0.06)',
+          border: '0.5px solid #b8965a',
+          color: '#e8dcc0',
+          padding: '0.75rem 1.25rem',
+          fontSize: 11,
+          letterSpacing: '0.12em',
+          maxWidth: 220,
+          lineHeight: 1.6,
+          position: 'relative',
+        }}>
+          <span style={{ color: '#b8965a', marginRight: 6, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase' }}>Delivery</span>
+          Enjoy our dishes at home
+          <div style={{ position: 'absolute', bottom: -4, right: 16, width: 8, height: 8, background: '#b8965a', transform: 'rotate(45deg)' }}></div>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center text-white px-4 mt-5">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Welcome to Our Restaurant
+      {/* Main content */}
+      <div className="relative z-10 text-center px-4" style={{ marginTop: '1rem' }}>
+
+        {/* Eyebrow */}
+        <p style={{
+          fontSize: 10,
+          letterSpacing: '0.4em',
+          textTransform: 'uppercase',
+          color: '#b8965a',
+          marginBottom: '1.25rem',
+          fontWeight: 300,
+        }}>
+          Culinary Excellence · New Delhi
+        </p>
+
+        {/* Divider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: 300, margin: '0 auto 1.5rem' }}>
+          <div style={{ flex: 1, height: '0.5px', background: '#3a3020' }} />
+          <div style={{ width: 5, height: 5, background: '#b8965a', transform: 'rotate(45deg)', flexShrink: 0 }} />
+          <div style={{ flex: 1, height: '0.5px', background: '#3a3020' }} />
+        </div>
+
+        {/* Heading */}
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+          fontWeight: 300,
+          color: '#f5ead6',
+          lineHeight: 1.1,
+          margin: '0 0 1.25rem',
+          letterSpacing: '0.03em',
+        }}>
+          Welcome to <em style={{ fontStyle: 'italic', color: '#c9a55a' }}>Rakshand</em>
         </h1>
 
-        <p className="text-lg md:text-xl mb-4 max-w-2xl mx-auto">
+        {/* Subtext */}
+        <p style={{
+          fontSize: 13,
+          letterSpacing: '0.1em',
+          color: '#9a8e78',
+          maxWidth: 480,
+          margin: '0 auto 0.75rem',
+          lineHeight: 1.8,
+          fontWeight: 300,
+        }}>
           Experience the taste of perfection — where every bite tells a story.
         </p>
 
-        {/* Mobile only discount badge */}
-        <div className="md:hidden inline-block bg-orange-400 text-black text-sm font-semibold px-4 py-2 rounded-full mb-6">
-          🎉 25% off on orders above ₹1000
+
+        {/* Divider */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: 300, margin: '1.5rem auto 2rem' }}>
+          <div style={{ flex: 1, height: '0.5px', background: '#2a2010' }} />
+          <div style={{ width: 5, height: 5, background: '#b8965a', transform: 'rotate(45deg)', flexShrink: 0 }} />
+          <div style={{ flex: 1, height: '0.5px', background: '#2a2010' }} />
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
+        {/* Buttons */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
           <button
             onClick={() => navigate("/menu")}
-            className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-black font-semibold px-6 py-3 rounded-full transition-all duration-300"
+            className="hero-btn-outline"
+            style={{
+              background: 'transparent',
+              border: '0.5px solid #b8965a',
+              color: '#b8965a',
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              padding: '0.85rem 2.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
           >
-            All Menus
+            View Menu
           </button>
 
           <button
             onClick={() => navigate("/book-table")}
-            className="cursor-pointer bg-transparent border border-white hover:bg-white hover:text-black font-semibold px-6 py-3 rounded-full transition-all duration-300"
+            className="hero-btn-fill"
+            style={{
+              background: '#b8965a',
+              border: '0.5px solid #b8965a',
+              color: '#0a0a0a',
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 10,
+              letterSpacing: '0.25em',
+              textTransform: 'uppercase',
+              padding: '0.85rem 2.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+            }}
           >
-            Book a Table
+            Reserve a Table
           </button>
         </div>
+
       </div>
+
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0" style={{ height: 120, background: 'linear-gradient(to top, #0a0a0a, transparent)' }}></div>
+
     </section>
   );
 };

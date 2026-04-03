@@ -3,14 +3,13 @@ import { cartModel } from "../model/cart.model.js";
 import { orderModel } from "../model/order.model.js";
 
 
-// PLACE ORDER
-// PLACE ORDER
+
 export const placeOrder = async (req: Request, res: Response) => {
     try {
         const { id } = req.user;
         const { address, paymentMethod } = req.body;
 
-        // Address validation
+
         if (!address) {
             res.status(400).json({
                 msg: "Please fill your address",
@@ -18,7 +17,7 @@ export const placeOrder = async (req: Request, res: Response) => {
             return;
         }
 
-        // Find user cart
+
         const cart = await cartModel
             .findOne({ user: id })
             .populate("items.menuItem");
@@ -30,33 +29,33 @@ export const placeOrder = async (req: Request, res: Response) => {
             return;
         }
 
-        // Calculate current order subtotal
+
         const totalAmount = (cart.items as any[]).reduce(
             (sum, item) => sum + (item.menuItem?.price ?? 0) * item.quantity,
             0
         );
 
-        // ✅ Discount logic — 25% off if current order exceeds ₹1000
+
         const discountApplied = totalAmount > 1000;
         const discount = discountApplied ? totalAmount * 0.25 : 0;
         const finalAmount = totalAmount - discount;
 
-        // Create order
+
         const newOrder = await orderModel.create({
             user: id,
             items: cart.items.map((i: any) => ({
                 menuItem: i.menuItem._id,
                 quantity: i.quantity,
             })),
-            totalAmount,        // ✅ current order subtotal
-            discount,           // ✅ 0 or 25% of totalAmount
-            discountApplied,    // ✅ true/false flag
-            finalAmount,        // ✅ amount after discount
+            totalAmount,
+            discount,
+            discountApplied,
+            finalAmount,
             address,
             paymentMethod,
         });
 
-        // Clear cart
+
         cart.set("items", []);
         await cart.save();
 
@@ -79,7 +78,7 @@ export const placeOrder = async (req: Request, res: Response) => {
 };
 
 
-// GET USER ORDERS
+
 export const getOrder = async (req: Request, res: Response) => {
     try {
         const { id } = req.user;
@@ -108,8 +107,6 @@ export const getOrder = async (req: Request, res: Response) => {
 };
 
 
-
-// GET ALL ORDERS (ADMIN)
 export const getAllOrders = async (req: Request, res: Response) => {
     console.log("Cookies received:", req.cookies);
 
@@ -138,8 +135,6 @@ export const getAllOrders = async (req: Request, res: Response) => {
 };
 
 
-
-// UPDATE ORDER STATUS
 export const orderStatusUpdate = async (req: Request, res: Response) => {
     try {
         const { orderId } = req.params;

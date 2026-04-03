@@ -39,108 +39,247 @@ const BookTable = () => {
   };
 
   return (
-    <div className="min-h-screen bg-red-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[#0a0a0a] py-12 px-4"
+      style={{ fontFamily: "'Montserrat', sans-serif" }}>
 
-      <div className="w-full max-w-4xl bg-black shadow-2xl rounded-3xl p-10 border border-gray-100">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
+      `}</style>
 
-        {/* Title */}
-        <div className="text-center mb-10">
-          <h2 className="text-4xl font-bold text-orange-400">
-            Reserve Your Table
-          </h2>
-          <p className="text-white mt-2">
-            Book your table and enjoy a delicious dining experience
-          </p>
+      <div className="max-w-2xl mx-auto flex items-center justify-center">
+        <div className="w-full">
+          {/* Header */}
+          <div className="text-center mb-10">
+            <p
+              style={{
+                fontSize: 10,
+                letterSpacing: "0.35em",
+                textTransform: "uppercase",
+                color: "#b8965a",
+                marginBottom: "0.75rem",
+              }}
+            >
+              Reserve Your Table
+            </p>
+            <h1
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: "3rem",
+                fontWeight: 300,
+                color: "#f5ead6",
+                margin: "0 0 0.5rem",
+                lineHeight: 1.1,
+              }}
+            >
+              Book Your <em style={{ fontStyle: "italic", color: "#c9a55a" }}>Table</em>
+            </h1>
+            <p
+              style={{
+                fontSize: 12,
+                letterSpacing: "0.12em",
+                color: "#8a7e68",
+                fontWeight: 300,
+                margin: "0",
+              }}
+            >
+              Select a time and let us serve you
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            {/* Name + Email */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your Name"
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Your Email"
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            {/* Phone + Guests */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <input
+                type="tel"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
+                placeholder="Contact Number"
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+              <input
+                type="number"
+                name="numberOfPeople"
+                value={formData.numberOfPeople}
+                onChange={handleChange}
+                placeholder="Number of Guests"
+                min="1"
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            {/* Date + Time */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                required
+                style={{
+                  background: "#111008",
+                  border: "0.5px solid #3a3020",
+                  color: "#e8e0cc",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 12,
+                  letterSpacing: "0.1em",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "0.5rem",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            {/* Note */}
+            <textarea
+              name="note"
+              value={formData.note}
+              onChange={handleChange}
+              placeholder="Special requests (optional)"
+              rows={4}
+              style={{
+                background: "#111008",
+                border: "0.5px solid #3a3020",
+                color: "#e8e0cc",
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 12,
+                letterSpacing: "0.1em",
+                padding: "0.85rem 1rem",
+                borderRadius: "0.5rem",
+                outline: "none",
+                boxSizing: "border-box",
+                resize: "vertical",
+              }}
+            />
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              style={{
+                background: "linear-gradient(to right, #b8965a, #c9a55a)",
+                color: "#f5ead6",
+                border: "none",
+                padding: "0.85rem 1rem",
+                borderRadius: "0.5rem",
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 12,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                fontWeight: "500",
+                cursor: "pointer",
+                outline: "none",
+              }}
+            >
+              Confirm Booking
+            </button>
+          </form>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          {/* Name + Email */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 outline-none transition text-gray-300"
-              required
-            />
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Your Email"
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 text-gray-300 outline-none transition"
-              required
-            />
-          </div>
-
-          {/* Phone + Guests */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <input
-              type="tel"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              placeholder="Contact Number"
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400  text-gray-300 outline-none transition"
-              required
-            />
-
-            <input
-              type="number"
-              name="numberOfPeople"
-              value={formData.numberOfPeople}
-              onChange={handleChange}
-              placeholder="Number of Guests"
-              min="1"
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 text-gray-300 outline-none transition"
-              required
-            />
-          </div>
-
-          {/* Date + Time */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 text-gray-300 outline-none transition"
-              required
-            />
-
-            <input
-              type="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 text-gray-300 outline-none transition"
-              required
-            />
-          </div>
-
-          {/* Note */}
-          <textarea
-            name="note"
-            value={formData.note}
-            onChange={handleChange}
-            placeholder="Special requests (optional)"
-            rows={4}
-            className="border border-gray-400 rounded-xl p-4 w-full focus:ring-2 focus:ring-orange-400 text-gray-300 outline-none transition resize-none"
-          ></textarea>
-
-          {/* Button */}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition shadow-md"
-          >
-            Confirm Booking
-          </button>
-        </form>
       </div>
     </div>
   );

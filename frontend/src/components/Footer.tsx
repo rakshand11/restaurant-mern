@@ -1,83 +1,89 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
     return (
-        <>
+        <footer style={{ background: '#080806', borderTop: '0.5px solid #2a2010', padding: '4rem 2rem 2rem', fontFamily: "'Montserrat', sans-serif" }}>
+            <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Montserrat:wght@300;400;500&display=swap');
+            .ft-link:hover { color: #b8965a !important; }
+            .ft-social:hover path, .ft-social:hover circle, .ft-social:hover rect { stroke: #b8965a; }
+            `}</style>
 
-            <footer className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-10 md:gap-20 py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500 bg-black">
-                <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
-                    <a href="https://prebuiltui.com">
-                        <svg width="31" height="34" viewBox="0 0 31 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m8.75 5.3 6.75 3.884 6.75-3.885M8.75 28.58v-7.755L2 16.939m27 0-6.75 3.885v7.754M2.405 9.408 15.5 16.954l13.095-7.546M15.5 32V16.939M29 22.915V10.962a2.98 2.98 0 0 0-1.5-2.585L17 2.4a3.01 3.01 0 0 0-3 0L3.5 8.377A3 3 0 0 0 2 10.962v11.953A2.98 2.98 0 0 0 3.5 25.5L14 31.477a3.01 3.01 0 0 0 3 0L27.5 25.5a3 3 0 0 0 1.5-2.585" stroke="url(#a)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <defs>
-                                <linearGradient id="a" x1="15.5" y1="2" x2="15.5" y2="32" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#F8FAFC" />
-                                    <stop offset="1" stop-color="#383838" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </a>
-                    <div>
-                        <p className="text-slate-100 font-semibold">Product</p>
-                        <ul className="mt-2 space-y-2">
-                            <li><a href="/" className="hover:text-indigo-600 transition">Home</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Support</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Pricing</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Affiliate</a></li>
-                        </ul>
+            <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+                {/* Top */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem', paddingBottom: '3rem', borderBottom: '0.5px solid #2a2010' }}>
+
+                    {/* Brand */}
+                    <div style={{ maxWidth: 260 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1.25rem' }}>
+                            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+                                <polygon points="18,2 22,14 34,14 24,22 28,34 18,26 8,34 12,22 2,14 14,14" fill="none" stroke="#b8965a" strokeWidth="1" />
+                                <polygon points="18,7 21,15 30,15 23,20 26,29 18,23 10,29 13,20 6,15 15,15" fill="#b8965a" opacity="0.15" />
+                                <circle cx="18" cy="18" r="4" fill="#b8965a" />
+                            </svg>
+                            <div>
+                                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.2rem', fontWeight: 400, color: '#f0e6cc', letterSpacing: '0.08em', lineHeight: 1 }}>Rakshand</div>
+                                <div style={{ fontSize: 7, letterSpacing: '0.35em', color: '#b8965a', textTransform: 'uppercase', marginTop: 2 }}>Fine Dining</div>
+                            </div>
+                        </div>
+                        <p style={{ fontSize: 11, letterSpacing: '0.06em', color: '#4a4030', lineHeight: 1.9, fontWeight: 300 }}>
+                            Crafting unforgettable dining experiences in the heart of New Delhi since 2019.
+                        </p>
                     </div>
+
+                    {/* Links */}
+                    {[
+                        { heading: 'Explore', links: [['/', 'Home'], ['/menu', 'Our Menu'], ['/book-table', 'Book a Table'], ['/contact', 'Contact']] },
+                        { heading: 'Visit Us', links: [['#', 'New Delhi, India'], ['#', 'Open Daily 12–11pm'], ['#', '+91 98765 43210'], ['#', 'hello@rakshand.in']] },
+                    ].map(({ heading, links }) => (
+                        <div key={heading}>
+                            <p style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#b8965a', marginBottom: '1.25rem' }}>{heading}</p>
+                            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {links.map(([href, label]) => (
+                                    <li key={label}>
+                                        <Link to={href} className="ft-link" style={{ fontSize: 11, letterSpacing: '0.08em', color: '#4a4030', textDecoration: 'none', transition: 'color 0.2s' }}>
+                                            {label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+
+                    {/* Social */}
                     <div>
-                        <p className="text-slate-100 font-semibold">Resources</p>
-                        <ul className="mt-2 space-y-2">
-                            <li><a href="/" className="hover:text-indigo-600 transition">Company</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Blogs</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Community</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Careers<span className="text-xs text-white bg-indigo-600 rounded-md ml-2 px-2 py-1">We’re hiring!</span></a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">About</a></li>
-                        </ul>
+                        <p style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#b8965a', marginBottom: '1.25rem' }}>Follow Us</p>
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            {[
+                                <path key="ig" d="M12 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zm4 14c0 2.2-1.8 4-4 4H8c-2.2 0-4-1.8-4-4V8c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v8z M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 8a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm5-9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />,
+                                <path key="tw" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />,
+                            ].map((path, i) => (
+                                <a key={i} href="#" className="ft-social">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a4030" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'stroke 0.2s' }}>
+                                        {path}
+                                    </svg>
+                                </a>
+                            ))}
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-slate-100 font-semibold">Legal</p>
-                        <ul className="mt-2 space-y-2">
-                            <li><a href="/" className="hover:text-indigo-600 transition">Privacy</a></li>
-                            <li><a href="/" className="hover:text-indigo-600 transition">Terms</a></li>
-                        </ul>
+
+                </div>
+
+                {/* Bottom */}
+                <div style={{ paddingTop: '1.5rem', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+                    <p style={{ fontSize: 10, letterSpacing: '0.15em', color: '#3a3020', margin: 0 }}>
+                        © 2025 Rakshand Fine Dining. All rights reserved.
+                    </p>
+                    <div style={{ display: 'flex', gap: '1.5rem' }}>
+                        {['Privacy', 'Terms'].map((label) => (
+                            <a key={label} href="#" className="ft-link" style={{ fontSize: 10, letterSpacing: '0.15em', color: '#3a3020', textDecoration: 'none', transition: 'color 0.2s' }}>
+                                {label}
+                            </a>
+                        ))}
                     </div>
                 </div>
-                <div className="flex flex-col max-md:items-center max-md:text-center gap-2 items-end">
-                    <p className="max-w-60">Making every customer feel valued—no matter the size of your audience.</p>
-                    <div className="flex items-center gap-4 mt-3">
-                        <a href="https://dribbble.com/prebuiltui" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-dribbble size-5 hover:text-indigo-500" aria-hidden="true">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"></path>
-                                <path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"></path>
-                                <path d="M8.56 2.75c4.37 6 6 9.42 8 17.72"></path>
-                            </svg>
-                        </a>
-                        <a href="https://www.linkedin.com/company/prebuiltui" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-linkedin size-5 hover:text-indigo-500" aria-hidden="true">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                <rect width="4" height="12" x="2" y="9"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a href="https://x.com/prebuiltui" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-twitter size-5 hover:text-indigo-500" aria-hidden="true">
-                                <path
-                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
-                                </path>
-                            </svg>
-                        </a>
-                        <a href="https://www.youtube.com/@prebuiltui" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-youtube size-6 hover:text-indigo-500" aria-hidden="true">
-                                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
-                                </path>
-                                <path d="m10 15 5-3-5-3z"></path>
-                            </svg>
-                        </a>
-                    </div>
-                    <p className="mt-3 text-center">© 2025 <a href="https://prebuiltui.com">PrebuiltUI</a></p>
-                </div>
-            </footer>
-        </>
+
+            </div>
+        </footer>
     );
-};
+}

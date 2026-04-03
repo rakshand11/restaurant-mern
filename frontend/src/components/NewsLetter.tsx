@@ -2,52 +2,54 @@ export default function NewsLetter() {
     return (
         <>
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-                *{
-        ont-family: 'Poppins', sans-serif;
-                }
+                @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Montserrat:wght@300;400;500&display=swap');
+                .nl-btn:hover { background: #9a7a40 !important; border-color: #9a7a40 !important; }
+                .nl-input::placeholder { color: #4a4030; }
             `}</style>
 
-            <div
-                className=" bg-black relative w-full px-4 text-center text-white py-24 flex flex-col items-center justify-center bg-cover bg-center"
-            >
+            <div style={{ background: '#0a0a0a', padding: '6rem 1.5rem', textAlign: 'center', fontFamily: "'Montserrat', sans-serif", borderTop: '0.5px solid #2a2010' }}>
 
-                {/* Black overlay */}
-                <div className="absolute inset-0 bg-black/70"></div>
+                {/* Eyebrow */}
+                <p style={{ fontSize: 10, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#b8965a', marginBottom: '1.25rem' }}>
+                    Stay Updated
+                </p>
 
-                {/* Content */}
-                <div className="relative z-10 flex flex-col items-center">
-
-                    <p className="text-yellow-500 font-medium">
-                        Stay Updated
-                    </p>
-
-                    <h1 className="max-w-lg font-semibold text-4xl mt-2 text-orange-400">
-                        Never miss our delicious updates
-                    </h1>
-
-                    <p className="max-w-md mt-4 text-gray-400">
-                        Subscribe to our newsletter to get updates about new dishes,
-                        chef specials, and exclusive food offers delivered straight
-                        to your inbox.
-                    </p>
-
-                    <div className="flex items-center justify-center mt-10 border border-slate-500 focus-within:outline focus-within:outline-indigo-500 text-sm rounded-full h-14 max-w-md w-full">
-                        <input
-                            type="email"
-                            className="bg-transparent outline-none rounded-full px-4 h-full flex-1"
-                            placeholder="Enter your email address"
-                        />
-                        <button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full h-11 mr-1 px-8">
-                            Subscribe
-                        </button>
-                    </div>
-
-                    <p className="text-xs text-slate-400 mt-4">
-                        We respect your privacy. No spam, only tasty updates.
-                    </p>
-
+                {/* Divider */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: 260, margin: '0 auto 1.5rem' }}>
+                    <div style={{ flex: 1, height: '0.5px', background: '#2a2010' }} />
+                    <div style={{ width: 5, height: 5, background: '#b8965a', transform: 'rotate(45deg)', flexShrink: 0 }} />
+                    <div style={{ flex: 1, height: '0.5px', background: '#2a2010' }} />
                 </div>
+
+                {/* Heading */}
+                <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 300, color: '#f5ead6', margin: '0 auto 1rem', maxWidth: 480, lineHeight: 1.2 }}>
+                    Never miss our <em style={{ fontStyle: 'italic', color: '#c9a55a' }}>delicious</em> updates
+                </h2>
+
+                <p style={{ fontSize: 12, letterSpacing: '0.08em', color: '#6a6050', maxWidth: 420, margin: '0 auto 2.5rem', lineHeight: 1.9, fontWeight: 300 }}>
+                    Subscribe to receive updates about new dishes, chef specials, and exclusive offers delivered straight to your inbox.
+                </p>
+
+                {/* Input */}
+                <div style={{ display: 'flex', alignItems: 'center', maxWidth: 460, margin: '0 auto', border: '0.5px solid #3a3020', background: '#0f0d08' }}>
+                    <input
+                        type="email"
+                        className="nl-input"
+                        placeholder="Your email address"
+                        style={{ background: 'transparent', outline: 'none', padding: '1rem 1.25rem', flex: 1, fontSize: 12, letterSpacing: '0.08em', color: '#e8dcc0', fontFamily: "'Montserrat', sans-serif", border: 'none' }}
+                    />
+                    <button
+                        className="nl-btn"
+                        style={{ background: '#b8965a', border: '0.5px solid #b8965a', color: '#0a0a0a', fontFamily: "'Montserrat', sans-serif", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', padding: '1rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+                    >
+                        Subscribe
+                    </button>
+                </div>
+
+                <p style={{ fontSize: 10, letterSpacing: '0.12em', color: '#3a3020', marginTop: '1rem' }}>
+                    No spam. Only tasteful updates.
+                </p>
+
             </div>
         </>
     );

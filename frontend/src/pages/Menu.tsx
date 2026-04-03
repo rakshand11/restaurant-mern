@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Search, X } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import MenuCard from "../components/MenuCard";
 
 interface MenuItem {
@@ -10,131 +11,108 @@ interface MenuItem {
   price: number;
   image: string;
   isAvailabel?: boolean;
+  category: { _id: string; name: string };
 }
 
 const Menu = () => {
   const [menus, setMenus] = useState<MenuItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const categoryId = searchParams.get("category");
 
   useEffect(() => {
     let cancelled = false;
-
-    axios
-      .get("https://api.rakshand.site/menu/get")
+    axios.get("https://api.rakshand.site/menu/get")
       .then((res) => {
-        const items: MenuItem[] = res.data?.items ?? [];
-        if (!cancelled) setMenus(items);
+        if (!cancelled) setMenus(res.data?.items ?? []);
       })
-      .catch((error) => console.log(error));
-
-    return () => {
-      cancelled = true;
-    };
+      .catch(console.log);
+    return () => { cancelled = true; };
   }, []);
 
   const filteredMenus = useMemo(() => {
-    if (searchQuery.trim() === "") return menus;
-    const query = searchQuery.toLowerCase();
-    return menus.filter((menu) => menu.name.toLowerCase().includes(query));
-  }, [searchQuery, menus]);
+    let items = menus;
+    if (categoryId) {
+      items = items.filter((m) => m.category?._id === categoryId);
+    }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      items = items.filter((m) => m.name.toLowerCase().includes(q));
+    }
+    return items;
+  }, [menus, categoryId, searchQuery]);
 
-  const handleClearSearch = () => setSearchQuery("");
+  const categoryName = categoryId
+    ? menus.find((m) => m.category?._id === categoryId)?.category?.name
+    : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b bg-red-50 py-16">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-[#0a0a0a] py-12 px-4"
+      style={{ fontFamily: "'Montserrat', sans-serif" }}>
 
-        {/* Header */}
-        <div className="text-center mb-12">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
+      `}</style>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
-            Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-500">
-              Delicious Menu
-            </span>
-          </h1>
-
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-lg">
-            Discover our handcrafted dishes prepared with fresh ingredients
-            and authentic flavors. Find your favorite meal below.
-          </p>
-
-          {/* Search Box */}
-          <div className="max-w-xl mx-auto mt-8">
-            <div className="relative">
-
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-
-              <input
-                type="text"
-                placeholder="Search your favorite dish..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 rounded-full border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all shadow-sm"
-              />
-
-              {searchQuery && (
-                <button
-                  onClick={handleClearSearch}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-          </div>
+      {/* Header */}
+      <div className="text-center mb-10">
+        <p style={{ fontSize: 10, letterSpacing: '0.35em', textTransform: 'uppercase', color: '#b8965a', marginBottom: '0.75rem' }}>
+          Culinary Excellence
+        </p>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', fontWeight: 300, color: '#f5ead6', margin: '0 0 0.5rem', lineHeight: 1.1 }}>
+          Our <em style={{ fontStyle: 'italic', color: '#c9a55a' }}>Menu</em>
+        </h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.25rem auto', maxWidth: 260 }}>
+          <div style={{ flex: 1, height: '0.5px', background: '#3a3020' }} />
+          <div style={{ width: 6, height: 6, background: '#b8965a', transform: 'rotate(45deg)' }} />
+          <div style={{ flex: 1, height: '0.5px', background: '#3a3020' }} />
         </div>
+        <p style={{ fontSize: 12, letterSpacing: '0.12em', color: '#8a7e68', fontWeight: 300 }}>
+          Handcrafted with the finest ingredients
+        </p>
+      </div>
 
-        {/* Result Counter */}
-        <div className="mb-10 text-center">
-          <p className="text-gray-600 text-lg">
-            {searchQuery ? (
-              <>
-                Found{" "}
-                <span className="font-bold text-yellow-600">
-                  {filteredMenus.length}
-                </span>{" "}
-                {filteredMenus.length === 1 ? "result" : "results"} for{" "}
-                <span className="font-semibold text-gray-800">
-                  "{searchQuery}"
-                </span>
-              </>
-            ) : (
-              <>
-                Showing{" "}
-                <span className="font-bold text-yellow-600">
-                  {filteredMenus.length}
-                </span>{" "}
-                {filteredMenus.length === 1 ? "dish" : "dishes"}
-              </>
-            )}
-          </p>
-        </div>
+      {/* Search */}
+      <div className="relative max-w-xl mx-auto mb-10">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#b8965a', opacity: 0.6 }} />
+        <input
+          type="text"
+          placeholder="Search the menu..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            width: '100%', background: '#111008', border: '0.5px solid #3a3020',
+            color: '#e8e0cc', fontFamily: "'Montserrat', sans-serif", fontSize: 12,
+            letterSpacing: '0.1em', padding: '0.85rem 2.5rem 0.85rem 2.8rem',
+            outline: 'none', boxSizing: 'border-box'
+          }}
+        />
+        {searchQuery && (
+          <button onClick={() => setSearchQuery("")}
+            className="absolute right-4 top-1/2 -translate-y-1/2"
+            style={{ color: '#5a5040', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
 
-        {/* Menu Grid */}
+      {/* Content */}
+      <div className="max-w-2xl mx-auto">
+        <p style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#b8965a', marginBottom: '1.5rem', paddingBottom: '0.5rem', borderBottom: '0.5px solid #2a2010' }}>
+          {categoryName ?? "All dishes"}
+        </p>
+
         {filteredMenus.length > 0 ? (
-          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             {filteredMenus.map((menu) => (
-              <MenuCard menu={menu} key={menu._id} />
+              <MenuCard key={menu._id} menu={menu} />
             ))}
           </div>
         ) : (
-          <div className="text-center mt-16">
-
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+          <div style={{ textAlign: 'center', padding: '3rem 0' }}>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', color: '#3a3020', fontStyle: 'italic' }}>
               No dishes found
-            </h2>
-
-            <p className="text-gray-500 mb-6">
-              We couldn't find anything matching your search.
             </p>
-
-            <button
-              onClick={handleClearSearch}
-              className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full font-semibold transition-all shadow-md hover:shadow-lg"
-            >
-              Clear Search
-            </button>
           </div>
         )}
       </div>

@@ -1,97 +1,108 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Search, X } from "lucide-react";
-import MenuCard from "./MenuCard";
+import { useSearchParams } from "react-router-dom";
+import MenuCard from "../components/MenuCard";
+
+interface MenuItem {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+    isAvailabel?: boolean;
+    category: { _id: string; name: string } | string;
+}
 
 const Menu = () => {
-    const [menu, setMenu] = useState([]);
-    const [filteredMenus, setFilteredMenus] = useState([]);
+    const [menus, setMenus] = useState<MenuItem[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
-
-    const getMenu = async () => {
-        try {
-            const res = await axios.get("https://api.rakshand.site/menu/get");
-            setMenu(res.data.items);
-            setFilteredMenus(res.data.items);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const [searchParams] = useSearchParams();
+    const categoryId = searchParams.get("category");
 
     useEffect(() => {
-        getMenu();
+        let cancelled = false;
+
+        axios
+            .get("https://api.rakshand.site/menu/get")
+            .then((res) => {
+                const items: MenuItem[] = res.data?.items ?? [];
+                console.log("Sample item:", JSON.stringify(items[0], null, 2));
+                if (!cancelled) setMenus(items);
+            })
+            .catch((error) => console.log(error));
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
-    useEffect(() => {
-        if (searchQuery === "") {      //if user hasn't typed anything
-            setFilteredMenus(menu);    //showing them the full menu
-        } else {
-            const filtered = menu.filter((item) =>
-                item.name.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-            setFilteredMenus(filtered);  // update menu to show only the items matching the search
-        }
-    }, [searchQuery, menu]);
+    const filteredMenus = useMemo(() => {
+        let items = menus;
 
-    const handleClearSearch = () => {
-        setSearchQuery("");
-    };
+        if (categoryId) {
+            items = items.filter((menu) => {
+                const catId =
+                    typeof menu.category === "object" ? menu.category._id : menu.category;
+                return catId === categoryId;
+            });
+        }
+
+        if (searchQuery.trim() !== "") {
+            const query = searchQuery.toLowerCase();
+            items = items.filter((menu) => menu.name.toLowerCase().includes(query));
+        }
+
+        return items;
+    }, [menus, categoryId, searchQuery]);
+
+    const handleClearSearch = () => setSearchQuery("");
 
     return (
-        <div className="min-h-screen bg-black py-12">
-            <div className="container mx-auto px-4">
+        <div className="min-h-screen bg-gray-50 text-gray-900 py-14 px-4">
+            <div className="max-w-4xl mx-auto space-y-12">
 
-                {/* HEADER */}
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-orange-400">
-                        Our <span className="text-yellow-500">Menu</span>
-                    </h1>
+                {/* Header */}
+                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Our Menu</h1>
 
-                    <p className="text-gray-300 mt-2">
-                        Explore our delicious dishes
-                    </p>
+                {/* Search */}
+                <div className="relative">
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                    <input
+                        type="text"
+                        placeholder="Search food..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-14 pr-12 py-4 rounded-full bg-white border border-gray-300
+                       text-gray-900 placeholder-gray-500 focus:border-orange-500
+                       focus:shadow-sm focus:shadow-orange-500/30 outline-none transition-all"
+                    />
+                    {searchQuery && (
+                        <button
+                            onClick={handleClearSearch}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    )}
                 </div>
 
-                {/* SEARCH */}
-                <div className="max-w-2xl mx-auto mb-8">
-                    <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-5 h-5" />
-
-
-                        <input
-                            type="text"
-                            placeholder="Search dish..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-12 py-4 rounded-full border-2 border-gray-400 focus:border-yellow-500 outline-none text-gray-300"
-                        />
-
-                        {searchQuery && (
-                            <button
-                                onClick={handleClearSearch}
-                                className="absolute right-4 top-1/2 -translate-y-1/2"
-                            >
-                                <X className="w-5 h-5 text-gray-300" />
-                            </button>
-                        )}
-                    </div>
-                </div>
-
-                {/* RESULT COUNT */}
-                <p className="text-center text-gray-300 mb-8">
-                    Showing <span className="font-bold">{filteredMenus.length}</span> dishes
-                </p>
-
-                {/* MENU GRID */}
+                {/* Menu List */}
                 {filteredMenus.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filteredMenus.map((item) => (
-                            <MenuCard key={item._id} menu={item} />
+                    <div className="space-y-6">
+                        {filteredMenus.map((menu) => (
+                            <MenuCard key={menu._id} menu={menu} />
                         ))}
                     </div>
                 ) : (
-                    <div className="text-center text-gray-300">
-                        <p>😔 No dishes found at the moment.</p>
+                    <div className="flex flex-col items-center justify-center mt-10 space-y-3">
+                        <p className="text-gray-600 text-center">No dishes found</p>
+                        <button
+                            onClick={handleClearSearch}
+                            className="text-sm px-4 py-2 rounded-full bg-gray-200 text-gray-700 border border-gray-300 hover:bg-gray-300 transition"
+                        >
+                            Clear search
+                        </button>
                     </div>
                 )}
             </div>
