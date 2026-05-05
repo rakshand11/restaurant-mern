@@ -48,7 +48,7 @@ const AdminLogin = () => {
             setLoading(true);
 
             const res = await axios.post(
-                "https://api.rakshand.site/user/admin/login",
+                "http://localhost:3000/user/admin/login",
                 formData,
                 { withCredentials: true }
             );

@@ -35,7 +35,7 @@ const Cart = () => {
 
   const fetchCartData = async () => {
     try {
-      const res = await axios.get("https://api.rakshand.site/cart/get", {
+      const res = await axios.get("http://localhost:3000/cart/get", {
         withCredentials: true,
       });
 
@@ -70,7 +70,7 @@ const Cart = () => {
 
   const removeFromCart = async (menuId: string) => {
     try {
-      await axios.delete(`https://api.rakshand.site/cart/delete/${menuId}`, {
+      await axios.delete(`http://localhost:3000/cart/delete/${menuId}`, {
         withCredentials: true,
       });
       toast.success("Item removed from cart");

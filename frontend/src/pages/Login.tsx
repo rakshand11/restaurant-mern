@@ -25,8 +25,8 @@ const Login = () => {
     try {
       setLoading(true);
       const endpoint = isAdmin
-        ? "https://api.rakshand.site/user/admin/login"
-        : "https://api.rakshand.site/user/login";
+        ? "http://localhost:3000/user/admin/login"
+        : "http://localhost:3000/user/login";
 
       const res = await axios.post(endpoint, formData, { withCredentials: true });
 

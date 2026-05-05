@@ -28,9 +28,9 @@ const Signup = () => {
     }
     try {
       setLoading(true);
-      await axios.post("https://api.rakshand.site/user/register", formData);
+      await axios.post("http://localhost:3000/user/register", formData);
       const loginRes = await axios.post(
-        "https://api.rakshand.site/user/login",
+        "http://localhost:3000/user/login",
         { email: formData.email, password: formData.password },
         { withCredentials: true }
       );

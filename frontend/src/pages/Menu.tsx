@@ -22,7 +22,7 @@ const Menu = () => {
 
   useEffect(() => {
     let cancelled = false;
-    axios.get("https://api.rakshand.site/menu/get")
+    axios.get("http://localhost:3000/menu/get")
       .then((res) => {
         if (!cancelled) setMenus(res.data?.items ?? []);
       })

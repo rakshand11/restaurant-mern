@@ -10,7 +10,7 @@ const Bookings = () => {
 
     const fecthBookings = async () => {
         try {
-            const { data } = await axios.get("https://api.rakshand.site/booking/bookings", { withCredentials: true });
+            const { data } = await axios.get("http://localhost:3000/booking/bookings", { withCredentials: true });
             console.log("dataa", data);
 
             if (data.success) {
@@ -27,7 +27,7 @@ const Bookings = () => {
         try {
             setLoading(true);
             const { data } = await axios.put(
-                `https://api.rakshand.site/booking/update/${bookingId}`,
+                `http://localhost:3000/booking/update/${bookingId}`,
                 {
 
                     status: newStatus,

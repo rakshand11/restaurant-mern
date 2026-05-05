@@ -16,7 +16,7 @@ const Dashboard = () => {
 
     const getOrders = async () => {
         try {
-            const { data } = await axios.get("https://api.rakshand.site/order/all-order", {
+            const { data } = await axios.get("http://localhost:3000/order/all-order", {
                 withCredentials: true
             })
             setOrders(data.orders)

@@ -24,7 +24,7 @@ const Menu = () => {
         let cancelled = false;
 
         axios
-            .get("https://api.rakshand.site/menu/get")
+            .get("http://localhost:3000/menu/get")
             .then((res) => {
                 const items: MenuItem[] = res.data?.items ?? [];
                 console.log("Sample item:", JSON.stringify(items[0], null, 2));

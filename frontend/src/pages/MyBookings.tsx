@@ -8,7 +8,7 @@ const MyBookings = () => {
   const fetchBookings = async () => {
     try {
       const { data } = await axios.get(
-        "https://api.rakshand.site/booking/my-booking",
+        "http://localhost:3000/booking/my-booking",
         {
           withCredentials: true,
         }

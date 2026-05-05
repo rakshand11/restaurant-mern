@@ -11,7 +11,7 @@ const Orders = () => {
     const fetchOrders = async () => {
         try {
             const { data } = await axios.get(
-                "https://api.rakshand.site/order/all-order",
+                "http://localhost:3000/order/all-order",
                 { withCredentials: true }
             );
 
@@ -36,7 +36,7 @@ const Orders = () => {
 
         try {
             await axios.put(
-                `https://api.rakshand.site/order/update-status/${orderId}`,
+                `http://localhost:3000/order/update-status/${orderId}`,
                 { status: newStatus },
                 { withCredentials: true }
             );

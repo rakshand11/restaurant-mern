@@ -24,7 +24,7 @@ const BookTable = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://api.rakshand.site/booking/create",
+        "http://localhost:3000/booking/create",
         formData,
         { withCredentials: true }
       );

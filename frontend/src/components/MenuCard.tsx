@@ -18,7 +18,7 @@ const MenuCard = ({ menu }: { menu: MenuItem }) => {
 
     const addToCart = async (menuId: string) => {
         try {
-            const res = await axios.post("https://api.rakshand.site/cart/add",
+            const res = await axios.post("http://localhost:3000/cart/add",
                 { menuItemId: menuId, quantity: 1 },
                 { withCredentials: true }
             );

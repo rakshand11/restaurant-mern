@@ -28,7 +28,7 @@ const MenuDetails = () => {
         let cancelled = false;
 
         axios
-            .get("https://api.rakshand.site/menu/get")
+            .get("http://localhost:3000/menu/get")
             .then((res) => {
                 if (cancelled) return;
                 const items: MenuItem[] = res.data?.items ?? [];
@@ -50,7 +50,7 @@ const MenuDetails = () => {
         setIsAdding(true);
         try {
             const res = await axios.post(
-                "https://api.rakshand.site/cart/add",
+                "http://localhost:3000/cart/add",
                 { menuItemId: menu._id, quantity },
                 { withCredentials: true }
             );

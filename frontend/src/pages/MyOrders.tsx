@@ -28,7 +28,7 @@ const MyOrders = () => {
 
   const fetchMyOrders = async () => {
     try {
-      const { data } = await axios.get("https://api.rakshand.site/order/get", {
+      const { data } = await axios.get("http://localhost:3000/order/get", {
         withCredentials: true,
       });
 

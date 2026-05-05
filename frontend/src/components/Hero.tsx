@@ -105,7 +105,6 @@ const Hero = () => {
           Experience the taste of perfection — where every bite tells a story.
         </p>
 
-
         {/* Divider */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: 300, margin: '1.5rem auto 2rem' }}>
           <div style={{ flex: 1, height: '0.5px', background: '#2a2010' }} />

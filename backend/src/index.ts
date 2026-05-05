@@ -33,7 +33,8 @@ connectCloudinary()
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
-    "https://restaurant-mern-sable.vercel.app"
+    "https://restaurant-mern-sable.vercel.app",
+    "https://restaurant-mern-augpeomiz-rakshands-projects.vercel.app"
 ]
 
 app.use(cors({
@@ -51,9 +52,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }))
-
-
-app.options("*", cors())
 
 
 app.use(express.json())
