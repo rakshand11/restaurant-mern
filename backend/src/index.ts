@@ -33,6 +33,7 @@ connectCloudinary()
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
+    "http://localhost:3000",
     "https://restaurant-mern-sable.vercel.app",
     "https://restaurant-mern-augpeomiz-rakshands-projects.vercel.app"
 ]

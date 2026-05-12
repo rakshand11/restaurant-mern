@@ -15,8 +15,7 @@ const Categories = () => {
     useEffect(() => {
         let cancelled = false;
 
-        axios
-            .get("https://api.rakshand.site/category/get", { withCredentials: true })
+        axios.get("http://localhost:3000/category/get", { withCredentials: true })
             .then((res) => {
                 if (!cancelled) setCategories(res.data?.category ?? []);
             })
